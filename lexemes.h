@@ -1,12 +1,12 @@
-#include <stdbool.h>    //standard boolean
+#include <stdbool.h>    // standard boolean
 
 #ifndef LEXEMES_H
 #define LEXEMES_H
 
-// enumerating token types
+// Enumerating token types
 typedef enum {
     KEYWORD,                        // keywords like HAI, KTHXBYE, etc.
-    VARIDENT,                       // variable identifiers (ex: variable names)
+    VARIDENT,                       // variable identifiers (e.g., variable names)
     
     // for literals
     NUMBR_LITERAL,                  // integer 
@@ -16,41 +16,28 @@ typedef enum {
 
     // for comments
     COMMENT,                        // INLINE COMMENTS
-    MULTILINE_COMMENT_START,        // OBTW
-    MULTILINE_COMMENT_END,          // TLDR
-
-    // for linebreak
-    WHITESPACE,            
-    NEWLINE,               
+    MULTILINE_COMMENT_START,        // OBTW (start of multiline comment)
+    MULTILINE_COMMENT_END,          // TLDR (end of multiline comment)
 
     // unknown tokens
     UNKNOWN                
 } TokenType;
 
-// structure to define a toke
+// Structure to define a token
 typedef struct {
-    TokenType type;        // check the token type
-    char value[256];       // we set the value of the token to be up until 256 bits
+    TokenType type;        // Token type
+    char value[256];       // Token value (up to 256 characters)
 } Token;
 
-// defining based on lexemes milestone (slight adjustments since yung iba nasa grep format)
+// Defining regex for token matching
 #define REGEX_VARIABLE_IDENTIFIER "^[A-Za-z_][A-Za-z0-9_]*$"
-#define REGEX_FUNCTION_IDENTIFIER "^[A-Za-z_][A-Za-z0-9_]*$"
-#define REGEX_LOOP_IDENTIFIER "^[A-Za-z_][A-Za-z0-9_]*$"
-
-#define REGEX_NUMBR_LITERAL "-?\\d+"
-#define REGEX_NUMBAR_LITERAL "-?\\d+\\.\\d+"
-#define REGEX_YARN_LITERAL "^\".*?\"$"
-#define REGEX_TROOF_LITERAL "^(WIN|FAIL)$"
-#define REGEX_TYPE_LITERAL "^(NOOB|NUMBR|NUMBAR|YARN|TROOF)$"
-
+#define REGEX_NUMBR_LITERAL "^-?\\d+$"            // Match integers
+#define REGEX_NUMBAR_LITERAL "^-?\\d+\\.\\d+$"    // Match floating point numbers
+#define REGEX_YARN_LITERAL "^\".*\"$"             // Match string literals (quoted)
+#define REGEX_TROOF_LITERAL "^(WIN|FAIL)$"        // Match boolean literals (WIN/FAIL)
 #define REGEX_KEYWORD "\\b(HAI|KTHXBYE|VISIBLE|I HAS A|ITZ|R|SUM OF|DIFF OF|PRODUKT OF|QUOSHUNT OF|MOD OF|BIGGR OF|SMALLR OF|BOTH SAEM|DIFFRINT|O RLY\\?|YA RLY|MEBBE|NOWAI|OIC|WTF\\?|OMG|OMGWTF|IM IN YR|UPPIN|NERFIN|YR|TIL|WILE|IM OUTTA YR|HOW IZ I|IF U SAY SO|GTFO|FOUND YR|MKAY)\\b"
+#define REGEX_COMMENT "^(BTW).*"                  // Match inline comments (BTW)
+#define REGEX_MULTILINE_COMMENT_START "^OBTW$"    // Start of multiline comment
+#define REGEX_MULTILINE_COMMENT_END "^TLDR$"      // End of multiline comment
 
-#define REGEX_COMMENT "(^|\\s)BTW.*$"
-#define REGEX_MULTILINE_COMMENT_START "(?:^|\\n)OBTW"
-#define REGEX_MULTILINE_COMMENT_END "(?:^|\\n)TLDR"
-
-#define REGEX_WHITESPACE "\\s+"
-#define REGEX_NEWLINE "\\r?\\n"
-
-#endif 
+#endif

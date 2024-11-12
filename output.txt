@@ -1,3 +1,14 @@
-Unexpected character at index 43: :
-Unexpected character at index 44: ü
-Unexpected character at index 45: 
+Token Type: KEYWORD, Value: HAI
+Token Type: UNKNOWN, Value: 1.2
+Token Type: VARIABLE_IDENTIFIER, Value: I
+Token Type: VARIABLE_IDENTIFIER, Value: HAS
+Token Type: VARIABLE_IDENTIFIER, Value: A
+Token Type: VARIABLE_IDENTIFIER, Value: VAR
+Token Type: VARIABLE_IDENTIFIER, Value: VAR
+Token Type: KEYWORD, Value: R
+Token Type: UNKNOWN, Value: 5
+Token Type: KEYWORD, Value: VISIBLE
+Token Type: UNKNOWN, Value: "Hello
+Token Type: UNKNOWN, Value: World!"
+Token Type: COMMENT, Value: BTW This is a comment
+Token Type: MULTILINE_COMMENT_START, Value: OBTW

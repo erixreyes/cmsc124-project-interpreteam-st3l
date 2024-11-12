@@ -1,4 +1,9 @@
-HAI
-I HAS A var ITZ 10
-VISIBLE var
+HAI 1.2
+I HAS A VAR
+VAR R 5
+VISIBLE "Hello World!"
+BTW This is a comment
+OBTW
+    Multi-line comment
+TLDR
 KTHXBYE
