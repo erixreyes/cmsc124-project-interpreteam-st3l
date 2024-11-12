@@ -7,7 +7,7 @@
 // Helper function to match a regex pattern to a text
 int match_regex(const char *regex_pattern, const char *text) {
     regex_t regex;
-    if (regcomp(&regex, regex_pattern, REG_EXTENDED | REG_NOSUB)) {
+    if (regcomp(&regex, regex_pattern, REG_EXTENDED)) {
         fprintf(stderr, "Could not compile regex: %s\n", regex_pattern);
         exit(1);
     }
@@ -28,6 +28,15 @@ TokenType determine_token_type(const char *word) {
     if (match_regex(REGEX_MULTILINE_COMMENT_END, word)) return MULTILINE_COMMENT_END;
     if (match_regex(REGEX_VARIABLE_IDENTIFIER, word)) return VARIDENT;
     return UNKNOWN;
+}
+
+// Function to strip quotes from a YARN_LITERAL token
+void strip_quotes(char *word) {
+    size_t len = strlen(word);
+    if (len >= 2 && word[0] == '"' && word[len - 1] == '"') {
+        memmove(word, word + 1, len - 2);
+        word[len - 2] = '\0';
+    }
 }
 
 // Function to get a string representation of token types
@@ -82,6 +91,11 @@ void tokenize_line(char *line, FILE *output_file) {
         current_token.type = type;
         strncpy(current_token.value, token, sizeof(current_token.value) - 1);
         current_token.value[sizeof(current_token.value) - 1] = '\0';
+
+        // Handle yarn literals by stripping quotes
+        if (type == YARN_LITERAL) {
+            strip_quotes(current_token.value);
+        }
 
         // Write token type and value to output file
         fprintf(output_file, "Token Type: %s, Value: %s\n", token_type_to_string(current_token.type), current_token.value);

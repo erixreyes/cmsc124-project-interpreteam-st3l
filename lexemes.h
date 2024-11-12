@@ -1,5 +1,3 @@
-#include <stdbool.h>    // standard boolean
-
 #ifndef LEXEMES_H
 #define LEXEMES_H
 
@@ -33,10 +31,10 @@ typedef struct {
 #define REGEX_VARIABLE_IDENTIFIER "^[A-Za-z_][A-Za-z0-9_]*$"
 #define REGEX_NUMBR_LITERAL "^-?\\d+$"            // Match integers
 #define REGEX_NUMBAR_LITERAL "^-?\\d+\\.\\d+$"    // Match floating point numbers
-#define REGEX_YARN_LITERAL "^\".*\"$"             // Match string literals (quoted)
+#define REGEX_YARN_LITERAL "^\"(.*?)\"$"          // Match string literals (strip quotes)
 #define REGEX_TROOF_LITERAL "^(WIN|FAIL)$"        // Match boolean literals (WIN/FAIL)
 #define REGEX_KEYWORD "\\b(HAI|KTHXBYE|VISIBLE|I HAS A|ITZ|R|SUM OF|DIFF OF|PRODUKT OF|QUOSHUNT OF|MOD OF|BIGGR OF|SMALLR OF|BOTH SAEM|DIFFRINT|O RLY\\?|YA RLY|MEBBE|NOWAI|OIC|WTF\\?|OMG|OMGWTF|IM IN YR|UPPIN|NERFIN|YR|TIL|WILE|IM OUTTA YR|HOW IZ I|IF U SAY SO|GTFO|FOUND YR|MKAY)\\b"
-#define REGEX_COMMENT "^(BTW).*"                  // Match inline comments (BTW)
+#define REGEX_COMMENT "^(BTW\\b.*)"               // Match inline comments (BTW)
 #define REGEX_MULTILINE_COMMENT_START "^OBTW$"    // Start of multiline comment
 #define REGEX_MULTILINE_COMMENT_END "^TLDR$"      // End of multiline comment
 
