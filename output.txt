@@ -1,0 +1,31 @@
+Token Type: KEYWORD, Value: HAI
+Token Type: NUMBAR_LITERAL, Value: 1.2
+Token Type: VARIABLE_IDENTIFIER, Value: I
+Token Type: VARIABLE_IDENTIFIER, Value: HAS
+Token Type: VARIABLE_IDENTIFIER, Value: A
+Token Type: VARIABLE_IDENTIFIER, Value: VAR
+Token Type: VARIABLE_IDENTIFIER, Value: I
+Token Type: VARIABLE_IDENTIFIER, Value: HAS
+Token Type: VARIABLE_IDENTIFIER, Value: A
+Token Type: VARIABLE_IDENTIFIER, Value: VAR
+Token Type: KEYWORD, Value: ITZ
+Token Type: VARIABLE_IDENTIFIER, Value: SUM
+Token Type: VARIABLE_IDENTIFIER, Value: OF
+Token Type: VARIABLE_IDENTIFIER, Value: DIFF
+Token Type: VARIABLE_IDENTIFIER, Value: OF
+Token Type: NUMBR_LITERAL, Value: 5
+Token Type: VARIABLE_IDENTIFIER, Value: AN
+Token Type: NUMBR_LITERAL, Value: 2
+Token Type: VARIABLE_IDENTIFIER, Value: AN
+Token Type: VARIABLE_IDENTIFIER, Value: SUM
+Token Type: VARIABLE_IDENTIFIER, Value: OF
+Token Type: NUMBR_LITERAL, Value: 3
+Token Type: VARIABLE_IDENTIFIER, Value: AN
+Token Type: NUMBR_LITERAL, Value: 4
+Token Type: VARIABLE_IDENTIFIER, Value: VAR
+Token Type: KEYWORD, Value: R
+Token Type: NUMBR_LITERAL, Value: 5
+Token Type: KEYWORD, Value: VISIBLE
+Token Type: YARN_LITERAL, Value: "Hello World!"
+Token Type: COMMENT, Value: BTW This is a comment
+Token Type: MULTILINE_COMMENT_START, Value: OBTW
