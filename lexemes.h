@@ -33,9 +33,9 @@ typedef struct {
 #define REGEX_VARIABLE_IDENTIFIER "^[A-Za-z_][A-Za-z0-9_]*$"
 #define REGEX_NUMBR_LITERAL "^-?[0-9]+$"            // Match integers
 #define REGEX_NUMBAR_LITERAL "^-?[0-9].[0-9]$"    // Match floating point numbers
-//#define REGEX_YARN_LITERAL "(^\"[A-Za-z0-9_]*$)|(^[A-Za-z0-9_])*\"$"             // Match string literals (quoted)
+#define REGEX_YARN_LITERAL "(^\"[A-Za-z0-9_]*$)|(^[A-Za-z0-9_])*\"$"             // Match string literals (quoted)
 // #define REGEX_YARN_LITERAL "(^\"\"$"             // Match string literals (quoted)
-#define REGEX_YARN_LITERAL "^\".*\"$"
+
 #define REGEX_TROOF_LITERAL "^(WIN|FAIL)$"        // Match boolean literals (WIN/FAIL)
 #define REGEX_KEYWORD "\\b(HAI|KTHXBYE|VISIBLE|I HAS A|ITZ|R|SUM OF|DIFF OF|PRODUKT OF|QUOSHUNT OF|MOD OF|BIGGR OF|SMALLR OF|BOTH SAEM|DIFFRINT|O RLY\\?|YA RLY|MEBBE|NOWAI|OIC|WTF\\?|OMG|OMGWTF|IM IN YR|UPPIN|NERFIN|YR|TIL|WILE|IM OUTTA YR|HOW IZ I|IF U SAY SO|GTFO|FOUND YR|MKAY)\\b"
 #define REGEX_COMMENT "^(BTW).*"                  // Match inline comments (BTW)

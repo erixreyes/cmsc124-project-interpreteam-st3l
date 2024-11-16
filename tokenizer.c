@@ -68,41 +68,23 @@ void tokenize_line(char *line, FILE *output_file) {
     // Handle tokens
     char *token = strtok(line, " \t\n");
     while (token != NULL) {
-        // Handle multi-word YARN literals
-        if (token[0] == '"') {  // Start of YARN literal
-            char yarn_literal[1024] = "";
-            strncat(yarn_literal, token, sizeof(yarn_literal) - strlen(yarn_literal) - 1);
+        TokenType type = determine_token_type(token);
 
-            // Continue collecting tokens until we find the last quoting mark
-            while (token[strlen(token) - 1] != '"' && (token = strtok(NULL, " \t\n")) != NULL) {
-                strncat(yarn_literal, " ", sizeof(yarn_literal) - strlen(yarn_literal) - 1);
-                strncat(yarn_literal, token, sizeof(yarn_literal) - strlen(yarn_literal) - 1);
-            }
-
-            // Continue 
-            if (token != NULL) {
-                TokenType type = determine_token_type(yarn_literal);
-                fprintf(output_file, "Token Type: %s, Value: %s\n", token_type_to_string(type), yarn_literal);
-            } 
-        } else {
-            TokenType type = determine_token_type(token);
-
-            // Check for start of multiline comment
-            if (type == MULTILINE_COMMENT_START) {
-                fprintf(output_file, "Token Type: MULTILINE_COMMENT_START, Value: OBTW\n");
-                in_multiline_comment = 1;
-                break;
-            }
-
-            // Prepare token struct
-            Token current_token;
-            current_token.type = type;
-            strncpy(current_token.value, token, sizeof(current_token.value) - 1);
-            current_token.value[sizeof(current_token.value) - 1] = '\0';
-
-            // Write token type and value to output file
-            fprintf(output_file, "Token Type: %s, Value: %s\n", token_type_to_string(current_token.type), current_token.value);
+        // Check for start of multiline comment
+        if (type == MULTILINE_COMMENT_START) {
+            fprintf(output_file, "Token Type: MULTILINE_COMMENT_START, Value: OBTW\n");
+            in_multiline_comment = 1;
+            break;
         }
+
+        // Prepare token struct
+        Token current_token;
+        current_token.type = type;
+        strncpy(current_token.value, token, sizeof(current_token.value) - 1);
+        current_token.value[sizeof(current_token.value) - 1] = '\0';
+
+        // Write token type and value to output file
+        fprintf(output_file, "Token Type: %s, Value: %s\n", token_type_to_string(current_token.type), current_token.value);
 
         token = strtok(NULL, " \t\n");
     }
