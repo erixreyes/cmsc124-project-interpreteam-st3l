@@ -87,8 +87,8 @@ class SyntaxAnalyzer:
 
 def main():
     try:
-        # Read tokens from tokenizer.py
-        with open("output.txt", "r") as token_file:
+        # read tokens from tokenizer.py
+        with open("output.txt", "r") as token_file: #
             tokens = []
             for line in token_file:
                 parts = line.strip().split(", ")
@@ -113,5 +113,5 @@ def main():
         print("Syntax analysis complete with errors. Check syntax_output.txt for details.")
 
 if __name__ == "__main__":
-    lexical_main() 
+    lexical_main()  # runs lexical analyzer
     main()

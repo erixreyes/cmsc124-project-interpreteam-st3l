@@ -5,27 +5,6 @@ Program
   HAI
   Body
     Token: {'type': 'NUMBAR_LITERAL', 'value': '1.2'}
-    Token: {'type': 'KEYWORD', 'value': 'I HAS A'}
-    Token: {'type': 'VARIABLE_IDENTIFIER', 'value': 'VAR'}
-    Token: {'type': 'KEYWORD', 'value': 'I HAS A'}
-    Token: {'type': 'VARIABLE_IDENTIFIER', 'value': 'VAR'}
-    Token: {'type': 'KEYWORD', 'value': 'ITZ'}
-    Token: {'type': 'KEYWORD', 'value': 'SUM OF'}
-    Token: {'type': 'KEYWORD', 'value': 'DIFF OF'}
-    Token: {'type': 'NUMBR_LITERAL', 'value': '5'}
-    Token: {'type': 'VARIABLE_IDENTIFIER', 'value': 'AN'}
-    Token: {'type': 'NUMBR_LITERAL', 'value': '2'}
-    Token: {'type': 'VARIABLE_IDENTIFIER', 'value': 'AN'}
-    Token: {'type': 'KEYWORD', 'value': 'SUM OF'}
-    Token: {'type': 'NUMBR_LITERAL', 'value': '3'}
-    Token: {'type': 'VARIABLE_IDENTIFIER', 'value': 'AN'}
-    Token: {'type': 'NUMBR_LITERAL', 'value': '4'}
-    Token: {'type': 'VARIABLE_IDENTIFIER', 'value': 'VAR'}
-    Token: {'type': 'KEYWORD', 'value': 'R'}
-    Token: {'type': 'NUMBR_LITERAL', 'value': '5'}
     Token: {'type': 'KEYWORD', 'value': 'VISIBLE'}
-    Token: {'type': 'YARN_LITERAL', 'value': '"Hello World!"'}
-    Token: {'type': 'COMMENT', 'value': 'BTW This is a comment'}
-    Token: {'type': 'MULTILINE_COMMENT_START', 'value': 'OBTW'}
-    Token: {'type': 'MULTILINE_COMMENT_END', 'value': 'TLDR'}
+    Token: {'type': 'YARN_LITERAL', 'value': '"Hello'}
   KTHXBYE

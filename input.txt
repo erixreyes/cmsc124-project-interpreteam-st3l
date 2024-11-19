@@ -1,10 +1,5 @@
 HAI 1.2
-I HAS A VAR
-I HAS A VAR ITZ SUM OF DIFF OF 5 AN 2 AN SUM OF 3 AN 4
-VAR R 5
-VISIBLE "Hello World!"
-BTW This is a comment
-OBTW
-    Multi-line comment
-TLDR
+VISIBLE "Hello, world!"
 KTHXBYE
+
+

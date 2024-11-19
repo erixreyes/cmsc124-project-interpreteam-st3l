@@ -15,11 +15,12 @@ class TokenType:
 
 # Keywords used
 KEYWORDS = [
-    "HAI", "KTHXBYE", "VISIBLE", "I HAS A", "ITZ", "R", "SUM OF", "DIFF OF",
-    "PRODUKT OF", "QUOSHUNT OF", "MOD OF", "BIGGR OF", "SMALLR OF", "BOTH SAEM",
-    "DIFFRINT", "O RLY?", "YA RLY", "MEBBE", "NOWAI", "OIC", "WTF?", "OMG", 
-    "OMGWTF", "IM IN YR", "UPPIN", "NERFIN", "YR", "TIL", "WILE", "IM OUTTA YR", 
-    "HOW IZ I", "IF U SAY SO", "GTFO", "FOUND YR", "MKAY"
+    "HAI", "KTHXBYE", "WAZZUP", "BUHBYE", "BTW", "OBTW", "TLDR", "I HAS A", 
+    "ITZ", "R", "SUM OF", "DIFF OF", "PRODUKT OF", "QUOSHUNT OF", "MOD OF", "BIGGR OF", "SMALLR OF", 
+    "BOTH OF", "EITHER OF", "WON OF", "NOT", "ANY OF", "ALL OF", "BOTH SAEM", "DIFFRINT", "SMOOSH", "MAEK", 
+    "A", "IS NOW A", "VISIBLE", "GIMMEH", "O RLY?", "YA RLY", "MEBBE", "NO WAI", "OIC", "WTF?", "OMG", "OMGWTF", 
+    "IM IN YR", "UPPIN", "NERFIN", "YR", "TIL", "WILE", "IM OUTTA YR", "HOW IZ I", "IF U SAY SO", "GTFO", 
+    "FOUND YR", "I IZ", "MKAY"
 ]
 
 # RegEx patterns for token types
