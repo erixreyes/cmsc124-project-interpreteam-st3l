@@ -1,6 +1,6 @@
 import re
 
-# Token types enumeration
+# Token types
 class TokenType:
     KEYWORD = "KEYWORD"
     VARIDENT = "VARIABLE_IDENTIFIER"
@@ -13,7 +13,7 @@ class TokenType:
     MULTILINE_COMMENT_END = "MULTILINE_COMMENT_END"
     UNKNOWN = "UNKNOWN"
 
-# Regex patterns for token types
+# Keywords used
 KEYWORDS = [
     "HAI", "KTHXBYE", "VISIBLE", "I HAS A", "ITZ", "R", "SUM OF", "DIFF OF",
     "PRODUKT OF", "QUOSHUNT OF", "MOD OF", "BIGGR OF", "SMALLR OF", "BOTH SAEM",
@@ -22,6 +22,7 @@ KEYWORDS = [
     "HOW IZ I", "IF U SAY SO", "GTFO", "FOUND YR", "MKAY"
 ]
 
+# RegEx patterns for token types
 REGEX_PATTERNS = {
     TokenType.KEYWORD: r"\b(" + "|".join(re.escape(keyword) for keyword in KEYWORDS) + r")\b",
     TokenType.NUMBR_LITERAL: r"^-?[0-9]+$",
