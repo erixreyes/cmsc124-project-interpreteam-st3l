@@ -1,0 +1,84 @@
+# 1. Basic Program
+HAI 1.2
+VISIBLE "Hello, world!"
+KTHXBYE
+
+# 2. Variable Declaration and Assignment
+HAI 1.2
+I HAS A VAR
+VAR R "LOLCODE"
+VISIBLE VAR
+KTHXBYE
+
+# 3. Mathematical Operations
+HAI 1.2
+VISIBLE SUM OF 5 AN 3
+VISIBLE DIFF OF 10 AN 4
+VISIBLE PRODUKT OF 7 AN 2
+VISIBLE QUOSHUNT OF 8 AN 2
+VISIBLE MOD OF 10 AN 3
+KTHXBYE
+
+# 4. Logical Operations
+HAI 1.2
+VISIBLE BOTH SAEM 5 AN 5
+VISIBLE DIFFRINT 5 AN 3
+KTHXBYE
+
+# 5. Multi-line Comments
+HAI 1.2
+OBTW
+This is a multiline comment
+That spans multiple lines
+TLDR
+VISIBLE "Comment ignored"
+KTHXBYE
+
+# 6. Control Structures
+HAI 1.2
+VISIBLE "Starting O RLY Test"
+O RLY?
+YA RLY
+    VISIBLE "This is true."
+MEBBE
+    VISIBLE "This is maybe."
+NOWAI
+    VISIBLE "This is false."
+OIC
+KTHXBYE
+
+# 7. Loops
+HAI 1.2
+IM IN YR LOOP
+VISIBLE "Repeating"
+TIL BOTH SAEM 5 AN 5
+IM OUTTA YR LOOP
+KTHXBYE
+
+# 8. Functions
+HAI 1.2
+HOW IZ I ADD YR NUM1 AN NUM2
+    FOUND YR SUM OF NUM1 AN NUM2
+IF U SAY SO
+
+VISIBLE ADD YR 5 AN 7
+KTHXBYE
+
+# 9. Invalid Syntax
+HAI 1.2
+VISIBLE "Missing end keyword"
+
+# 10. Nested Control Structures
+HAI 1.2
+VISIBLE "Outer O RLY?"
+O RLY?
+YA RLY
+    VISIBLE "Inner O RLY?"
+    O RLY?
+    YA RLY
+        VISIBLE "Nested true."
+    OIC
+NOWAI
+    VISIBLE "Outer false."
+OIC
+KTHXBYE
