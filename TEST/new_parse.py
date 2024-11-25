@@ -17,11 +17,12 @@ def read_tokens(file_name="output.txt"):
     except json.JSONDecodeError as e:
         print(f"Error decoding JSON: {e}")
         return []
-
 class Parser:
     def __init__(self, tokens):
         self.tokens = tokens
         self.current = 0
+        self.variables = {}  # Store declared variables
+        self.it = None  # Represent the IT variable
 
     def peek(self):
         """Peek at the current token."""
@@ -67,21 +68,21 @@ class Parser:
         )
 
     def parse_expression(self):
-        """Parse an expression: arithmetic or literal."""
-        # Check for arithmetic operations
+        """Parse an expression: arithmetic, literal, or variable."""
         if self.match("KEYWORD", "SUM OF") or self.match("KEYWORD", "DIFF OF") or \
            self.match("KEYWORD", "PRODUKT OF") or self.match("KEYWORD", "QUOSHUNT OF") or \
            self.match("KEYWORD", "MOD OF") or self.match("KEYWORD", "BIGGR OF") or \
            self.match("KEYWORD", "SMALLR OF"):
-            # Parse the two operands of the operation
-            self.parse_expression()  # First operand
+            operator = self.tokens[self.current - 1]["value"]
+            if not self.parse_expression():
+                self.error(f"Expected an expression after '{operator}'")
             if not self.match("KEYWORD", "AN"):
-                self.error("Expected 'AN' between operands in arithmetic expression")
-            self.parse_expression()  # Second operand
+                self.error(f"Expected 'AN' between operands in '{operator}'")
+            if not self.parse_expression():
+                self.error(f"Expected an expression after 'AN' in '{operator}'")
             return True
 
-        # If not an arithmetic operation, try parsing a literal or varident
-        return self.parse_literal() or self.match("VARIDENT")
+        return self.parse_literal() or self.match("VARIABLE_IDENTIFIER")
 
     def parse_print_list(self):
         """Parse a list of values or expressions: <expr> (AN <expr>)*."""
@@ -111,33 +112,85 @@ class Parser:
         """Parse a multiline comment: OBTW ... TLDR."""
         if not self.match("MULTILINE_COMMENT_START", "OBTW"):
             self.error("Expected 'OBTW' to start a multiline comment")
+
+        # Ensure there's no other token after OBTW on the same line
+        if self.peek() and self.peek()["type"] != "MULTILINE_COMMENT_END":
+            self.error("Invalid token after 'OBTW'. It should be the only token on the line.")
         
-        # Skip all tokens until we find 'TLDR'
-        while not self.match("MULTILINE_COMMENT_END", "TLDR"):
-            if not self.peek():
-                self.error("Unterminated multiline comment. Expected 'TLDR'.")
+        # Consume the OBTW token
+        self.consume()
+
+        # Now, we expect the next token to be 'TLDR' on a new line
+        if not self.match("MULTILINE_COMMENT_END", "TLDR"):
+            self.error("Expected 'TLDR' after 'OBTW'")
+
+    def parse_i_has_a(self):
+        """Parse the 'I HAS A' statement: I HAS A varident (ITZ <literal>)?."""
+        if not self.match("KEYWORD", "I HAS A"):
+            self.error("Expected 'I HAS A' to declare a variable")
+
+        # Parse the variable identifier (the name of the variable)
+        varident = self.match("VARIABLE_IDENTIFIER")
+        if not varident:
+            self.error("Expected a variable identifier after 'I HAS A'")
+
+        # Check if the variable is initialized with ITZ and a literal
+        if self.match("KEYWORD", "ITZ"):
+            literal = self.parse_literal()
+            if not literal:
+                self.error("Expected a literal after 'ITZ'")
+            # Store the variable with its initialized value
+            self.variables[varident["value"]] = literal["value"]
+        else:
+            # If no ITZ, just declare the variable without initialization
+            self.variables[varident["value"]] = None
+
+    def parse_orly(self):
+        """Parse an if-then statement: O RLY? YA RLY ... NO WAI ... OIC."""
+        if not self.match("KEYWORD", "O RLY"):
+            self.error("Expected 'O RLY?'")
+
+        if not self.match("KEYWORD", "YA RLY"):
+            self.error("Expected 'YA RLY' after 'O RLY?'")
+
+        # Parse YA RLY block
+        if self.it == "WIN":
+            self.parse_statements()  # Parse the true block
+            if self.match("KEYWORD", "NO WAI"):
+                self.skip_block()  # Skip the false block
+        elif self.match("KEYWORD", "NO WAI"):
+            self.parse_statements()  # Parse the false block
+
+        if not self.match("KEYWORD", "OIC"):
+            self.error("Expected 'OIC' to end the 'O RLY?' block")
+
+    def parse_statements(self):
+        """Parse a sequence of statements."""
+        while self.peek():
+            if self.match("KEYWORD", "KTHXBYE") or self.match("KEYWORD", "OIC") or self.match("KEYWORD", "NO WAI"):
+                self.current -= 1  # Stop at these keywords
+                return
+            if self.match("KEYWORD", "VISIBLE"):
+                self.current -= 1
+                self.parse_visible()
+            elif self.match("KEYWORD", "I HAS A"):
+                self.current -= 1
+                self.parse_i_has_a()
+            elif self.match("KEYWORD", "O RLY"):
+                self.current -= 1
+                self.parse_orly()
+            else:
+                self.error("Invalid statement inside block")
 
     def parse_program_structure(self):
         """Parse the program structure with support for comments and valid statements."""
-        # Check for the opening keyword
         if not self.match("KEYWORD", "HAI"):
             self.error("Expected 'HAI' at the start of the program")
-        
-        # Parse main program body
         while self.peek():
             if self.match("KEYWORD", "KTHXBYE"):
                 print("Program structure validated: HAI and KTHXBYE are present, with valid statements.")
-                return True
-            
-            # Handle program statements
-            if self.match("KEYWORD", "VISIBLE"):
-                self.current -= 1  # Roll back to let parse_visible handle this
-                self.parse_visible()
-            elif self.match("MULTILINE_COMMENT_START", "OBTW"):
-                self.current -= 1  # Roll back to let parse_multiline_comment handle this
-                self.parse_multiline_comment()
-            else:
-                self.error("Invalid statement")
+                return
+            self.parse_statements()
 
 # Main execution
 def main():
@@ -156,6 +209,7 @@ def main():
         with open("parsing_output.txt", "w") as output_file:
             output_file.write("Parsing successful: Program structure is valid.\n")
         print("Parsing successful: Program structure is valid.")
+        print(f"Declared Variables: {parser.variables}")  # Output the variables
 
     except SyntaxError as e:
         with open("parsing_output.txt", "w") as output_file:
