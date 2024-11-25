@@ -25,8 +25,13 @@ class Parser:
 
     def peek(self):
         """Peek at the current token."""
-        if self.current < len(self.tokens):
-            return self.tokens[self.current]
+        while self.current < len(self.tokens):
+            token = self.tokens[self.current]
+            if token["type"] == "COMMENT":
+                # Skip over COMMENT tokens
+                self.current += 1
+                continue
+            return token
         return None
 
     def consume(self):
@@ -71,10 +76,8 @@ class Parser:
                 self.error("Expected a literal value after 'AN'")
 
     def parse_inline_comment(self):
-        """Parse an optional inline comment: BTW <yarn>."""
-        if self.match("COMMENT"):  # Match BTW
-            if not self.match("YARN_LITERAL"):
-                self.error("Expected a yarn literal after 'BTW'")
+        """Parse an optional inline comment: BTW <text>."""
+        self.match("COMMENT")  # Simply consume the COMMENT token if present
 
     def parse_visible(self):
         """Parse a VISIBLE statement: VISIBLE <print_list> <inline_comment>?."""
@@ -87,8 +90,18 @@ class Parser:
         # Parse an optional inline comment
         self.parse_inline_comment()
 
+    def parse_multiline_comment(self):
+        """Parse a multiline comment: OBTW ... TLDR."""
+        if not self.match("MULTILINE_COMMENT_START", "OBTW"):
+            self.error("Expected 'OBTW' to start a multiline comment")
+        
+        # Skip all tokens until we find 'TLDR'
+        while not self.match("MULTILINE_COMMENT_END", "TLDR"):
+            if not self.peek():
+                self.error("Unterminated multiline comment. Expected 'TLDR'.")
+
     def parse_program_structure(self):
-        """Parse the program structure with support for comments and VISIBLE statements."""
+        """Parse the program structure with support for comments and valid statements."""
         # Check for the opening keyword
         if not self.match("KEYWORD", "HAI"):
             self.error("Expected 'HAI' at the start of the program")
@@ -103,6 +116,9 @@ class Parser:
             if self.match("KEYWORD", "VISIBLE"):
                 self.current -= 1  # Roll back to let parse_visible handle this
                 self.parse_visible()
+            elif self.match("MULTILINE_COMMENT_START", "OBTW"):
+                self.current -= 1  # Roll back to let parse_multiline_comment handle this
+                self.parse_multiline_comment()
             else:
                 self.error("Invalid statement")
 
