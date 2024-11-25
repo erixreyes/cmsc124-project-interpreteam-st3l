@@ -31,7 +31,7 @@ REGEX_PATTERNS = {
     TokenType.NUMBAR_LITERAL: r"^-?[0-9]+\.[0-9]+$",
     TokenType.YARN_LITERAL: r'^".*"$',
     TokenType.TROOF_LITERAL: r"^(WIN|FAIL)$",
-    TokenType.COMMENT: r"^(BTW).*",
+    TokenType.COMMENT: r"^(BTW)(.*)$",  # Match BTW and capture the rest as a comment
     TokenType.MULTILINE_COMMENT_START: r"^OBTW$",
     TokenType.MULTILINE_COMMENT_END: r"^TLDR$",
     TokenType.VARIDENT: r"^[A-Za-z_][A-Za-z0-9_]*$",
@@ -49,10 +49,10 @@ def determine_token_type(word):
     if match_regex(REGEX_PATTERNS[TokenType.MULTILINE_COMMENT_END], word):
         return TokenType.MULTILINE_COMMENT_END
     
-    # Check for inline comments (BTW) next
+    # Check for inline comments (BTW)
     if match_regex(REGEX_PATTERNS[TokenType.COMMENT], word):
         return TokenType.COMMENT
-    
+
     # Check other token types in order
     for token_type, regex_pattern in REGEX_PATTERNS.items():
         if token_type in [TokenType.MULTILINE_COMMENT_START, TokenType.MULTILINE_COMMENT_END, TokenType.COMMENT]:
@@ -62,24 +62,38 @@ def determine_token_type(word):
 
     return TokenType.UNKNOWN
 
-def tokenize_line(line):
+def tokenize_line(line, in_multiline_comment):
     tokens = []
     line = line.strip()
 
-    # Handle inline comments (BTW) -- If we encounter BTW, we stop parsing the line
-    if match_regex(REGEX_PATTERNS[TokenType.COMMENT], line):
-        # Capture everything from 'BTW' as a comment
-        tokens.append({"type": TokenType.COMMENT, "value": line})
-        return tokens  # Don't process further tokens on this line
+    # Handle multi-line comment blocks
+    if in_multiline_comment:
+        if match_regex(REGEX_PATTERNS[TokenType.MULTILINE_COMMENT_END], line):
+            tokens.append({"type": TokenType.MULTILINE_COMMENT_END, "value": "TLDR"})
+            return tokens, False  # End of multi-line comment block
+        return tokens, True  # Skip processing lines within the comment block
 
-    # Handle multi-line comments (OBTW ... TLDR)
+    # Check if the line starts a multi-line comment
     if match_regex(REGEX_PATTERNS[TokenType.MULTILINE_COMMENT_START], line):
         tokens.append({"type": TokenType.MULTILINE_COMMENT_START, "value": "OBTW"})
-        return tokens  # Stop processing and expect TLDR later
+        return tokens, True  # Enter multi-line comment mode
 
-    if match_regex(REGEX_PATTERNS[TokenType.MULTILINE_COMMENT_END], line):
-        tokens.append({"type": TokenType.MULTILINE_COMMENT_END, "value": "TLDR"})
-        return tokens  # End of multi-line comment
+    # Check if the line contains a BTW comment
+    match = re.match(REGEX_PATTERNS[TokenType.COMMENT], line)
+    if match:
+        before_btw = line[:match.start()].strip()
+        comment_content = match.group(2).strip()
+
+        # Tokenize the part before BTW
+        combined_pattern = r'"[^"]*"|' + REGEX_PATTERNS[TokenType.KEYWORD] + r'|[^\s]+'
+        for match in re.finditer(combined_pattern, before_btw):
+            token = match.group(0)
+            token_type = determine_token_type(token)
+            tokens.append({"type": token_type, "value": token})
+
+        # Add the entire comment part as a COMMENT token
+        tokens.append({"type": TokenType.COMMENT, "value": "BTW " + comment_content})
+        return tokens, False  # No further processing for this line
 
     # Match multi-word keywords and other tokens
     combined_pattern = r'"[^"]*"|' + REGEX_PATTERNS[TokenType.KEYWORD] + r'|[^\s]+'
@@ -88,14 +102,16 @@ def tokenize_line(line):
         token_type = determine_token_type(token)
         tokens.append({"type": token_type, "value": token})
 
-    return tokens
+    return tokens, False
 
 # Main function to read from input.txt and write tokens to output.txt
 def main():
+    in_multiline_comment = False
+
     try:
         with open("input.txt", "r") as input_file, open("output.txt", "w") as output_file:
             for line in input_file:
-                tokens = tokenize_line(line)
+                tokens, in_multiline_comment = tokenize_line(line, in_multiline_comment)
                 for token in tokens:
                     output_file.write(json.dumps(token) + "\n")
         print("Tokenization complete. Check output.txt for results.")

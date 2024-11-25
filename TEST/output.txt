@@ -9,6 +9,5 @@
 {"type": "KEYWORD", "value": "VISIBLE"}
 {"type": "YARN_LITERAL", "value": "\"Hello, world!\""}
 {"type": "MULTILINE_COMMENT_START", "value": "OBTW"}
-{"type": "VARIABLE_IDENTIFIER", "value": "hello"}
 {"type": "MULTILINE_COMMENT_END", "value": "TLDR"}
 {"type": "KEYWORD", "value": "KTHXBYE"}
