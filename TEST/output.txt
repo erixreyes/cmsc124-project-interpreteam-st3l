@@ -3,7 +3,33 @@
 {"type": "NUMBAR_LITERAL", "value": "1.2"}
 {"type": "COMMENT", "value": "BTW this is a comment"}
 {"type": "KEYWORD", "value": "VISIBLE"}
-{"type": "YARN_LITERAL", "value": "\"Hello, world!\""}
+{"type": "KEYWORD", "value": "SUM OF"}
+{"type": "KEYWORD", "value": "PRODUKT OF"}
+{"type": "NUMBR_LITERAL", "value": "3"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "NUMBR_LITERAL", "value": "5"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "KEYWORD", "value": "BIGGR OF"}
+{"type": "KEYWORD", "value": "DIFF OF"}
+{"type": "NUMBR_LITERAL", "value": "17"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "NUMBR_LITERAL", "value": "2"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "NUMBR_LITERAL", "value": "5"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "KEYWORD", "value": "BIGGR OF"}
+{"type": "KEYWORD", "value": "PRODUKT OF"}
+{"type": "NUMBR_LITERAL", "value": "11"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "NUMBR_LITERAL", "value": "2"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "KEYWORD", "value": "QUOSHUNT OF"}
+{"type": "KEYWORD", "value": "SUM OF"}
+{"type": "NUMBR_LITERAL", "value": "3"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "NUMBR_LITERAL", "value": "5"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "NUMBR_LITERAL", "value": "2"}
 {"type": "MULTILINE_COMMENT_START", "value": "OBTW"}
 {"type": "MULTILINE_COMMENT_END", "value": "TLDR"}
 {"type": "KEYWORD", "value": "KTHXBYE"}

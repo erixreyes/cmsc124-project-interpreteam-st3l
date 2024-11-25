@@ -21,7 +21,7 @@ KEYWORDS = [
     "BOTH OF", "EITHER OF", "WON OF", "NOT", "ANY OF", "ALL OF", "BOTH SAEM", "DIFFRINT", "SMOOSH", "MAEK", 
     "A", "IS NOW A", "VISIBLE", "GIMMEH", "O RLY?", "YA RLY", "MEBBE", "NO WAI", "OIC", "WTF?", "OMG", "OMGWTF", 
     "IM IN YR", "UPPIN", "NERFIN", "YR", "TIL", "WILE", "IM OUTTA YR", "HOW IZ I", "IF U SAY SO", "GTFO", 
-    "FOUND YR", "I IZ", "MKAY"
+    "FOUND YR", "I IZ", "MKAY", "AN"
 ]
 
 # RegEx patterns for token types

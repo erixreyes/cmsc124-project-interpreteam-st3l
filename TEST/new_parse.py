@@ -66,14 +66,31 @@ class Parser:
             self.match("TROOF_LITERAL")
         )
 
+    def parse_expression(self):
+        """Parse an expression: arithmetic or literal."""
+        # Check for arithmetic operations
+        if self.match("KEYWORD", "SUM OF") or self.match("KEYWORD", "DIFF OF") or \
+           self.match("KEYWORD", "PRODUKT OF") or self.match("KEYWORD", "QUOSHUNT OF") or \
+           self.match("KEYWORD", "MOD OF") or self.match("KEYWORD", "BIGGR OF") or \
+           self.match("KEYWORD", "SMALLR OF"):
+            # Parse the two operands of the operation
+            self.parse_expression()  # First operand
+            if not self.match("KEYWORD", "AN"):
+                self.error("Expected 'AN' between operands in arithmetic expression")
+            self.parse_expression()  # Second operand
+            return True
+
+        # If not an arithmetic operation, try parsing a literal or varident
+        return self.parse_literal() or self.match("VARIDENT")
+
     def parse_print_list(self):
-        """Parse a list of values: <literal> (AN <literal>)*."""
-        if not self.parse_literal():
-            self.error("Expected a literal value after 'VISIBLE'")
+        """Parse a list of values or expressions: <expr> (AN <expr>)*."""
+        if not self.parse_expression():
+            self.error("Expected an expression or value after 'VISIBLE'")
         
-        while self.match("KEYWORD", "AN"):  # Match additional literals connected by "AN"
-            if not self.parse_literal():
-                self.error("Expected a literal value after 'AN'")
+        while self.match("KEYWORD", "AN"):  # Match additional expressions connected by "AN"
+            if not self.parse_expression():
+                self.error("Expected an expression after 'AN'")
 
     def parse_inline_comment(self):
         """Parse an optional inline comment: BTW <text>."""
@@ -84,7 +101,7 @@ class Parser:
         if not self.match("KEYWORD", "VISIBLE"):
             self.error("Expected 'VISIBLE' for print statement")
         
-        # Parse the list of literals
+        # Parse the list of literals or expressions
         self.parse_print_list()
         
         # Parse an optional inline comment
