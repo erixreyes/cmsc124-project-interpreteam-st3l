@@ -1,0 +1,7 @@
+HAI
+VISIBLE 1.2 BTW this is a comment
+VISIBLE "Hello, world!"
+OBTW 
+hello 
+TLDR
+KTHXBYE

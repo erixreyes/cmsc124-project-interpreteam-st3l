@@ -1,0 +1,14 @@
+{"type": "KEYWORD", "value": "HAI"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "NUMBAR_LITERAL", "value": "1.2"}
+{"type": "COMMENT", "value": "BTW"}
+{"type": "VARIABLE_IDENTIFIER", "value": "this"}
+{"type": "VARIABLE_IDENTIFIER", "value": "is"}
+{"type": "VARIABLE_IDENTIFIER", "value": "a"}
+{"type": "VARIABLE_IDENTIFIER", "value": "comment"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "YARN_LITERAL", "value": "\"Hello, world!\""}
+{"type": "MULTILINE_COMMENT_START", "value": "OBTW"}
+{"type": "VARIABLE_IDENTIFIER", "value": "hello"}
+{"type": "MULTILINE_COMMENT_END", "value": "TLDR"}
+{"type": "KEYWORD", "value": "KTHXBYE"}
