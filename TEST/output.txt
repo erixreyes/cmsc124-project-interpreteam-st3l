@@ -23,6 +23,7 @@
 {"type": "VARIABLE_IDENTIFIER", "value": "x"}
 {"type": "KEYWORD", "value": "AN"}
 {"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "COMMENT", "value": "BTW this is a test"}
 {"type": "KEYWORD", "value": "VISIBLE"}
 {"type": "VARIABLE_IDENTIFIER", "value": "x"}
 {"type": "CONCAT_OPERATOR", "value": "+"}

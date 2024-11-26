@@ -53,7 +53,6 @@ def determine_token_type(word):
     return TokenType.UNKNOWN
 
 def tokenize_line(line, in_multiline_comment):
-    """Tokenize a single line of code."""
     tokens = []
     line = line.strip()
 
@@ -69,25 +68,37 @@ def tokenize_line(line, in_multiline_comment):
         tokens.append({"type": TokenType.MULTILINE_COMMENT_START, "value": "OBTW"})
         return tokens, True  # Enter multi-line comment mode
 
-    # Check if the line contains a BTW comment
-    match = re.match(REGEX_PATTERNS[TokenType.COMMENT], line)
-    if match:
-        before_btw = line[:match.start()].strip()
-        comment_content = match.group(2).strip()
+    # Handle inline comments (BTW)
+    if "BTW" in line:
+        # Split the line at BTW
+        before_btw, btw_comment = line.split("BTW", 1)
+        before_btw = before_btw.strip()  # Any tokens before BTW
+        btw_comment = btw_comment.strip()  # The comment after BTW
 
-        # Tokenize the part before BTW
-        tokens.extend(tokenize_string(before_btw))
-        tokens.append({"type": TokenType.COMMENT, "value": "BTW " + comment_content})
-        return tokens, False
+        # Tokenize anything before BTW
+        combined_pattern = r'"[^"]*"|' + REGEX_PATTERNS[TokenType.KEYWORD] + r'|[^\s]+'
+        for match in re.finditer(combined_pattern, before_btw):
+            token = match.group(0)
+            token_type = determine_token_type(token)
+            tokens.append({"type": token_type, "value": token})
 
-    # Tokenize the full line
-    tokens.extend(tokenize_string(line))
+        # Add the entire BTW comment as a single token
+        tokens.append({"type": TokenType.COMMENT, "value": "BTW " + btw_comment})
+        return tokens, False  # Stop processing this line further
+
+    # Tokenize the rest of the line as usual
+    combined_pattern = r'"[^"]*"|' + REGEX_PATTERNS[TokenType.KEYWORD] + r'|[^\s]+'
+    for match in re.finditer(combined_pattern, line):
+        token = match.group(0)
+        token_type = determine_token_type(token)
+        tokens.append({"type": token_type, "value": token})
+
     return tokens, False
 
 def tokenize_string(line):
     """Tokenize a string into separate tokens."""
     tokens = []
-
+    
     # Handle multi-word keywords first
     while line:
         matched = False
