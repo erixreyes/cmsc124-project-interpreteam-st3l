@@ -1,14 +1,167 @@
 {"type": "KEYWORD", "value": "HAI"}
+{"type": "KEYWORD", "value": "WAZZUP"}
+{"type": "COMMENT", "value": "BTW variable dec"}
 {"type": "KEYWORD", "value": "I HAS A"}
-{"type": "VARIABLE_IDENTIFIER", "value": "IT"}
-{"type": "KEYWORD", "value": "ITZ"}
-{"type": "TROOF_LITERAL", "value": "WIN"}
-{"type": "KEYWORD", "value": "O RLY?"}
-{"type": "KEYWORD", "value": "YA RLY"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "I HAS A"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "BUHBYE"}
+{"type": "KEYWORD", "value": "GIMMEH"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "GIMMEH"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
 {"type": "KEYWORD", "value": "VISIBLE"}
-{"type": "YARN_LITERAL", "value": "\"Condition is true!\""}
-{"type": "KEYWORD", "value": "NO WAI"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "YARN_LITERAL", "value": "\"+\""}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "YARN_LITERAL", "value": "\" = \""}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "KEYWORD", "value": "SUM OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
 {"type": "KEYWORD", "value": "VISIBLE"}
-{"type": "YARN_LITERAL", "value": "\"Condition is false!\""}
-{"type": "KEYWORD", "value": "OIC"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "YARN_LITERAL", "value": "\"-\""}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "YARN_LITERAL", "value": "\" = \""}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "KEYWORD", "value": "DIFF OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "YARN_LITERAL", "value": "\"*\""}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "YARN_LITERAL", "value": "\" = \""}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "KEYWORD", "value": "PRODUKT OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "YARN_LITERAL", "value": "\"/\""}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "YARN_LITERAL", "value": "\" = \""}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "KEYWORD", "value": "QUOSHUNT OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "YARN_LITERAL", "value": "\"%\""}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "YARN_LITERAL", "value": "\" = \""}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "KEYWORD", "value": "MOD OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "YARN_LITERAL", "value": "\"max(\""}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "YARN_LITERAL", "value": "\",\""}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "YARN_LITERAL", "value": "\") = \""}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "KEYWORD", "value": "BIGGR OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "YARN_LITERAL", "value": "\"min(\""}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "YARN_LITERAL", "value": "\",\""}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "YARN_LITERAL", "value": "\") = \""}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "KEYWORD", "value": "SMALLR OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "COMMENT", "value": "BTW x^2 + y^2"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "KEYWORD", "value": "SUM OF"}
+{"type": "KEYWORD", "value": "PRODUKT OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "KEYWORD", "value": "PRODUKT OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "COMMENT", "value": "BTW (x+y)^2"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "KEYWORD", "value": "PRODUKT OF"}
+{"type": "KEYWORD", "value": "SUM OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "KEYWORD", "value": "SUM OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "COMMENT", "value": "BTW max(x,y) - min(x,y)"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "KEYWORD", "value": "DIFF OF"}
+{"type": "KEYWORD", "value": "BIGGR OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "KEYWORD", "value": "SMALLR OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "COMMENT", "value": "BTW x + y/x + 0"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "KEYWORD", "value": "SUM OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "KEYWORD", "value": "SUM OF"}
+{"type": "KEYWORD", "value": "QUOSHUNT OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "TROOF_LITERAL", "value": "FAIL"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "KEYWORD", "value": "SUM OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "KEYWORD", "value": "SUM OF"}
+{"type": "KEYWORD", "value": "QUOSHUNT OF"}
+{"type": "YARN_LITERAL", "value": "\"17\""}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "TROOF_LITERAL", "value": "FAIL"}
 {"type": "KEYWORD", "value": "KTHXBYE"}

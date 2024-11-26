@@ -23,7 +23,8 @@ class Parser:
         self.current = 0
         self.variables = {}  # Store declared variables
         self.it = None  # Represent the IT variable
-
+        self.inside_wazzup = False 
+        
     def peek(self):
         """Peek at the current token."""
         while self.current < len(self.tokens):
@@ -89,13 +90,27 @@ class Parser:
         if not self.parse_expression():
             self.error("Expected an expression or value after 'VISIBLE'")
         
-        while self.match("KEYWORD", "AN"):  # Match additional expressions connected by "AN"
+        while self.match("KEYWORD", "AN") or self.match("CONCAT_OPERATOR", "+"):  # Match additional expressions connected by "AN"
             if not self.parse_expression():
-                self.error("Expected an expression after 'AN'")
+                self.error("Expected an expression after 'AN' or '+'")
 
     def parse_inline_comment(self):
         """Parse an optional inline comment: BTW <text>."""
         self.match("COMMENT")  # Simply consume the COMMENT token if present
+
+    def parse_wazzup(self):
+        """Parse the WAZZUP block: WAZZUP ... BUHBYE."""
+        if not self.match("KEYWORD", "WAZZUP"):
+            self.error("Expected 'WAZZUP' after 'HAI'")
+
+        self.inside_wazzup = True  # Enter WAZZUP block
+
+        while not self.match("KEYWORD", "BUHBYE"):
+            if not self.peek():
+                self.error("Unterminated 'WAZZUP' block. Expected 'BUHBYE'")
+            self.parse_i_has_a()  # Parse variable declarations only
+
+        self.inside_wazzup = False  # Exit WAZZUP block
 
     def parse_visible(self):
         """Parse a VISIBLE statement: VISIBLE <print_list> <inline_comment>?."""
@@ -125,7 +140,10 @@ class Parser:
             self.error("Expected 'TLDR' after 'OBTW'")
 
     def parse_i_has_a(self):
-        """Parse the 'I HAS A' statement: I HAS A varident (ITZ <literal>)?."""
+        """Parse the 'I HAS A' statement: I HAS A varident (ITZ <literal|varident|expression>)?."""
+        if not self.inside_wazzup:
+            self.error("Variable declarations are only allowed inside the 'WAZZUP ... BUHBYE' block")
+
         if not self.match("KEYWORD", "I HAS A"):
             self.error("Expected 'I HAS A' to declare a variable")
 
@@ -134,39 +152,119 @@ class Parser:
         if not varident:
             self.error("Expected a variable identifier after 'I HAS A'")
 
-        # Check if the variable is initialized with ITZ and a literal
+        # Check if the variable is initialized with ITZ
         if self.match("KEYWORD", "ITZ"):
+            # Parse the value for initialization
             literal = self.parse_literal()
-            if not literal:
-                self.error("Expected a literal after 'ITZ'")
-            # Store the variable with its initialized value
-            self.variables[varident["value"]] = literal["value"]
+            if literal:
+                # Store the variable with its initialized value
+                self.variables[varident["value"]] = literal["value"]
+            else:
+                var_value = self.match("VARIABLE_IDENTIFIER")
+                if var_value:
+                    if var_value["value"] in self.variables:
+                        self.variables[varident["value"]] = self.variables[var_value["value"]]
+                    else:
+                        self.error(f"Variable '{var_value['value']}' not declared.")
+                else:
+                    if not self.parse_expression():
+                        self.error("Expected a literal, variable, or expression after 'ITZ'")
+                    self.variables[varident["value"]] = self.it
         else:
-            # If no ITZ, just declare the variable without initialization
             self.variables[varident["value"]] = None
 
+    def parse_loop(self):
+        """Parse a loop: IM IN YR <loopname> (TIL/WILE <condition>) ... IM OUTTA YR <loopname>."""
+        if not self.match("KEYWORD", "IM IN YR"):
+            self.error("Expected 'IM IN YR' to start a loop")
+
+        # Parse the loop name
+        loopname_token = self.match("VARIABLE_IDENTIFIER")
+        if not loopname_token:
+            self.error("Expected a loop name after 'IM IN YR'")
+        loopname = loopname_token["value"]
+
+        # Parse the loop condition type (TIL/WILE)
+        if self.match("KEYWORD", "TIL"):
+            condition_type = "TIL"
+        elif self.match("KEYWORD", "WILE"):
+            condition_type = "WILE"
+        else:
+            self.error("Expected 'TIL' or 'WILE' after loop name")
+
+        # Parse the loop condition
+        if not self.parse_expression():
+            self.error(f"Expected an expression after '{condition_type}' in loop")
+
+        # Execute the loop
+        while True:
+            # Evaluate the condition based on the loop type
+            condition_result = self.it == "WIN"
+            if (condition_type == "TIL" and condition_result) or (condition_type == "WILE" and not condition_result):
+                break  # Exit the loop when the condition is met (TIL) or fails (WILE)
+
+            # Parse the loop body
+            self.parse_statements()
+
+            # Re-evaluate the condition after parsing the body
+            if not self.parse_expression():
+                self.error(f"Expected an expression after '{condition_type}' in loop")
+
+        # Ensure the loop ends with IM OUTTA YR <loopname>
+        if not self.match("KEYWORD", "IM OUTTA YR"):
+            self.error("Expected 'IM OUTTA YR' to end the loop")
+        if not self.match("VARIABLE_IDENTIFIER", loopname):
+            self.error(f"Expected loop name '{loopname}' after 'IM OUTTA YR'")
+
     def parse_orly(self):
-        """Parse an if-then statement: O RLY? YA RLY ... NO WAI ... OIC."""
+        """Parse an if-then statement: O RLY? YA RLY ... MEBBE ... NO WAI ... OIC."""
         if not self.match("KEYWORD", "O RLY?"):
             self.error("Expected 'O RLY?'")
 
-        # Check for YA RLY block
+        executed = False  # Track whether any block has executed
+
+        # YA RLY block (if-clause)
         if self.match("KEYWORD", "YA RLY"):
             if self.it == "WIN":
-                self.parse_statements()  # Parse true block
+                self.parse_statements()  # Execute true block
+                executed = True
             else:
-                self.skip_block()  # Skip the true block if IT is not WIN
+                self.skip_block()  # Skip true block if IT is not WIN
 
-        # Check for NO WAI block
-        if self.match("KEYWORD", "NO WAI"):
-            if self.it != "WIN":
-                self.parse_statements()  # Parse false block
+        # MEBBE blocks (else-if clauses)
+        while self.match("KEYWORD", "MEBBE"):
+            if executed:
+                self.skip_block()  # Skip this block since a previous block executed
             else:
-                self.skip_block()  # Skip the false block if IT is WIN
+                # Evaluate the condition for MEBBE
+                if not self.parse_expression():
+                    self.error("Expected an expression after 'MEBBE'")
+                if self.it == "WIN":
+                    self.parse_statements()  # Execute this block if condition is true
+                    executed = True
+                else:
+                    self.skip_block()  # Skip this block if condition is false
+
+        # NO WAI block (else-clause)
+        if self.match("KEYWORD", "NO WAI"):
+            if not executed:  # Only execute if no previous block executed
+                self.parse_statements()
+            else:
+                self.skip_block()  # Skip else block if a previous block executed
 
         # Expect OIC to end the conditional block
         if not self.match("KEYWORD", "OIC"):
             self.error("Expected 'OIC' to close 'O RLY?' block")
+
+    def parse_gimmeh(self):
+        """Parse the GIMMEH statement: GIMMEH <varident>."""
+        if not self.match("KEYWORD", "GIMMEH"):
+            self.error("Expected 'GIMMEH' to read input")
+
+        # Parse the variable identifier
+        varident = self.match("VARIABLE_IDENTIFIER")
+        if not varident:
+            self.error("Expected a variable identifier after 'GIMMEH'")
 
     def skip_block(self):
         """Skip over a block until encountering a terminating keyword."""
@@ -180,7 +278,7 @@ class Parser:
         """Parse a sequence of statements within a block."""
         while self.peek():
             token = self.peek()
-            if token["value"] in ["OIC", "NO WAI", "KTHXBYE"]:
+            if token["value"] in ["OIC", "NO WAI", "MEBBE", "IM OUTTA YR", "KTHXBYE"]:
                 return  # Exit on block terminators
             elif self.match("KEYWORD", "VISIBLE"):
                 self.current -= 1  # Allow parse_visible to handle it
@@ -191,13 +289,30 @@ class Parser:
             elif self.match("KEYWORD", "O RLY?"):
                 self.current -= 1  # Allow nested conditional blocks
                 self.parse_orly()
+            elif self.match("KEYWORD", "IM IN YR"):
+                self.current -= 1  # Allow nested loops
+                self.parse_loop()
+            elif self.match("KEYWORD", "WAZZUP"):
+                self.current -= 1  # Allow nested WAZZUP blocks
+                self.parse_wazzup()
+            elif self.match("KEYWORD", "GIMMEH"):
+                self.current -= 1   
+                self.parse_gimmeh()
             else:
                 self.error(f"Unexpected token inside block: {token}")
+
 
     def parse_program_structure(self):
         """Parse the program structure with support for comments and valid statements."""
         if not self.match("KEYWORD", "HAI"):
             self.error("Expected 'HAI' at the start of the program")
+
+        if self.peek() and self.match("KEYWORD", "WAZZUP"):
+            self.current -= 1  # Roll back to parse the WAZZUP block
+            self.parse_wazzup()
+        else:
+            self.error("Expected 'WAZZUP' after 'HAI' for variable declarations")
+
         while self.peek():
             if self.match("KEYWORD", "KTHXBYE"):
                 print("Program structure validated: HAI and KTHXBYE are present, with valid statements.")

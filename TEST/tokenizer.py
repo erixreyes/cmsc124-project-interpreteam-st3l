@@ -12,6 +12,7 @@ class TokenType:
     COMMENT = "COMMENT"
     MULTILINE_COMMENT_START = "MULTILINE_COMMENT_START"
     MULTILINE_COMMENT_END = "MULTILINE_COMMENT_END"
+    CONCAT_OPERATOR = "CONCAT_OPERATOR"
     UNKNOWN = "UNKNOWN"
 
 # Keywords used
@@ -19,31 +20,16 @@ KEYWORDS = [
     "HAI", "KTHXBYE", "WAZZUP", "BUHBYE", "BTW", "OBTW", "TLDR", "I HAS A", 
     "ITZ", "R", "SUM OF", "DIFF OF", "PRODUKT OF", "QUOSHUNT OF", "MOD OF", "BIGGR OF", "SMALLR OF", 
     "BOTH OF", "EITHER OF", "WON OF", "NOT", "ANY OF", "ALL OF", "BOTH SAEM", "DIFFRINT", "SMOOSH", "MAEK", 
-    "A", "IS NOW A", "VISIBLE", "GIMMEH", r"\bO RLY?", "YA RLY", "MEBBE", "NO WAI", "OIC", "WTF?", "OMG", "OMGWTF", 
-    "IM IN YR", "UPPIN", "NERFIN", "YR", "TIL", "WILE", "IM OUTTA YR", "HOW IZ I", "IF U SAY SO", "GTFO", 
-    "FOUND YR", "I IZ", "MKAY", "AN"
+    "A", "IS NOW A", "VISIBLE", "GIMMEH", "O RLY?", "YA RLY", "MEBBE", "NO WAI", "OIC", "TIL", "WILE", 
+    "IM IN YR", "IM OUTTA YR", "MKAY", "AN"
 ]
 
-MULTIWORD_KEYWORDS = [
-    "O RLY?",
-    "YA RLY",
-    "NO WAI",
-    "I HAS A",
-    "ITZ",
-    "SUM OF",
-    "DIFF OF",
-    "PRODUKT OF",
-    "QUOSHUNT OF",
-    "MOD OF",
-    "BIGGR OF",
-    "SMALLR OF",
-    "BOTH OF",
-    "EITHER OF",
-    "WON OF",
-]
+# Multi-word keywords need stricter handling
+MULTIWORD_KEYWORDS = sorted([kw for kw in KEYWORDS if " " in kw], key=len, reverse=True)
+
 # RegEx patterns for token types
 REGEX_PATTERNS = {
-    TokenType.KEYWORD: r"\b(" + "|".join(KEYWORDS) + r")\b",
+    TokenType.KEYWORD: r"\b(" + "|".join(re.escape(keyword) for keyword in KEYWORDS) + r")\b",
     TokenType.NUMBR_LITERAL: r"^-?[0-9]+$",
     TokenType.NUMBAR_LITERAL: r"^-?[0-9]+\.[0-9]+$",
     TokenType.YARN_LITERAL: r'^".*"$',
@@ -52,34 +38,22 @@ REGEX_PATTERNS = {
     TokenType.MULTILINE_COMMENT_START: r"^OBTW$",
     TokenType.MULTILINE_COMMENT_END: r"^TLDR$",
     TokenType.VARIDENT: r"^[A-Za-z_][A-Za-z0-9_]*$",
+    TokenType.CONCAT_OPERATOR: r"^\+$",
 }
 
-# Helper function to match a regex pattern to a word
 def match_regex(regex_pattern, text):
+    """Check if a text matches a regex pattern."""
     return re.match(regex_pattern, text) is not None
 
-
-# Determine the token type based on regex matching
 def determine_token_type(word):
-    # Check for MULTILINE_COMMENT_START and MULTILINE_COMMENT_END first
-    if match_regex(REGEX_PATTERNS[TokenType.MULTILINE_COMMENT_START], word):
-        return TokenType.MULTILINE_COMMENT_START
-    if match_regex(REGEX_PATTERNS[TokenType.MULTILINE_COMMENT_END], word):
-        return TokenType.MULTILINE_COMMENT_END
-    # Check for inline comments (BTW)
-    if match_regex(REGEX_PATTERNS[TokenType.COMMENT], word):
-        return TokenType.COMMENT
-
-    # Check other token types in order
+    """Determine the type of a token."""
     for token_type, regex_pattern in REGEX_PATTERNS.items():
-        if token_type in [TokenType.MULTILINE_COMMENT_START, TokenType.MULTILINE_COMMENT_END, TokenType.COMMENT]:
-            continue  # Already handled above
         if match_regex(regex_pattern, word):
             return token_type
-
     return TokenType.UNKNOWN
 
 def tokenize_line(line, in_multiline_comment):
+    """Tokenize a single line of code."""
     tokens = []
     line = line.strip()
 
@@ -102,36 +76,46 @@ def tokenize_line(line, in_multiline_comment):
         comment_content = match.group(2).strip()
 
         # Tokenize the part before BTW
-        combined_pattern = r'"[^"]*"|' + REGEX_PATTERNS[TokenType.KEYWORD] + r'|[^\s]+'
-        for match in re.finditer(combined_pattern, before_btw):
+        tokens.extend(tokenize_string(before_btw))
+        tokens.append({"type": TokenType.COMMENT, "value": "BTW " + comment_content})
+        return tokens, False
+
+    # Tokenize the full line
+    tokens.extend(tokenize_string(line))
+    return tokens, False
+
+def tokenize_string(line):
+    """Tokenize a string into separate tokens."""
+    tokens = []
+
+    # Handle multi-word keywords first
+    while line:
+        matched = False
+        for multiword in MULTIWORD_KEYWORDS:
+            if line.startswith(multiword):
+                tokens.append({"type": TokenType.KEYWORD, "value": multiword})
+                line = line[len(multiword):].strip()
+                matched = True
+                break
+        if matched:
+            continue
+
+        # Tokenize remaining parts
+        combined_pattern = r'"[^"]*"|' + REGEX_PATTERNS[TokenType.KEYWORD] + r'|\+|[^\s]+'
+        for match in re.finditer(combined_pattern, line):
             token = match.group(0)
             token_type = determine_token_type(token)
             tokens.append({"type": token_type, "value": token})
-
-        # Add the entire comment part as a COMMENT token
-        tokens.append({"type": TokenType.COMMENT, "value": "BTW " + comment_content})
-        return tokens, False  # No further processing for this line
-
-    # Match multi-word keywords first
-    for multiword in MULTIWORD_KEYWORDS:
-        if line.startswith(multiword):
-            tokens.append({"type": TokenType.KEYWORD, "value": multiword})
-            line = line[len(multiword):].strip()  # Remove matched keyword from the line
+            line = line[len(token):].strip()
             break
+        else:
+            break  # No match found, exit loop
 
-    # Match single-word keywords and other tokens
-    combined_pattern = r'"[^"]*"|' + REGEX_PATTERNS[TokenType.KEYWORD] + r'|[^\s]+'
-    for match in re.finditer(combined_pattern, line):
-        token = match.group(0)
-        token_type = determine_token_type(token)
-        tokens.append({"type": token_type, "value": token})
+    return tokens
 
-    return tokens, False
-
-# Main function to read from input.txt and write tokens to output.txt
+# Main function
 def main():
     in_multiline_comment = False
-
     try:
         with open("input.txt", "r") as input_file, open("output.txt", "w") as output_file:
             for line in input_file:
