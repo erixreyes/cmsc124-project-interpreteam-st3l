@@ -21,7 +21,7 @@ KEYWORDS = [
     "ITZ", "R", "SUM OF", "DIFF OF", "PRODUKT OF", "QUOSHUNT OF", "MOD OF", "BIGGR OF", "SMALLR OF", 
     "BOTH OF", "EITHER OF", "WON OF", "NOT", "ANY OF", "ALL OF", "BOTH SAEM", "DIFFRINT", "SMOOSH", "MAEK", 
     "A", "IS NOW A", "VISIBLE", "GIMMEH", "O RLY?", "YA RLY", "MEBBE", "NO WAI", "OIC", "TIL", "WILE", 
-    "IM IN YR", "IM OUTTA YR", "MKAY", "AN"
+    "IM IN YR", "IM OUTTA YR", "MKAY", "AN", "NUMBR", "NUMBAR", "YARN", "TROOF"
 ]
 
 # Multi-word keywords need stricter handling

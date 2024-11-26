@@ -70,6 +70,10 @@ class Parser:
 
     def parse_expression(self):
         """Parse an expression: arithmetic, literal, or variable."""
+        # Handle SMOOSH (concatenation)
+        if self.match("KEYWORD", "SMOOSH"):
+            return self.parse_smoosh()  # Handle the string concatenation
+
         if self.match("KEYWORD", "SUM OF") or self.match("KEYWORD", "DIFF OF") or \
            self.match("KEYWORD", "PRODUKT OF") or self.match("KEYWORD", "QUOSHUNT OF") or \
            self.match("KEYWORD", "MOD OF") or self.match("KEYWORD", "BIGGR OF") or \
@@ -83,8 +87,71 @@ class Parser:
                 self.error(f"Expected an expression after 'AN' in '{operator}'")
             return True
 
-        return self.parse_literal() or self.match("VARIABLE_IDENTIFIER")
+        # Handle explicit typecasting with MAEK (cast expression to another type)
+        if self.match("KEYWORD", "MAEK"):
+            varident = self.match("VARIABLE_IDENTIFIER")
+            if not varident:
+                self.error("Expected a variable identifier after 'MAEK'")
+            
+            if not self.match("KEYWORD", "A"):
+                self.error("Expected 'A' after variable identifier")
 
+            # Parse the target type (NUMBR, NUMBAR, YARN, etc.)
+            type_ = self.match("KEYWORD")
+            if not type_:
+                self.error("Expected a type after 'A'")
+
+            # Typecast the variable and return the result in IT
+            if type_:
+            # Change the type of the variable without changing the value
+                if type_["value"] == "NUMBR":
+                    self.variables[varident["value"]] = {"value": self.variables.get(varident["value"], 0), "type": "NUMBR"}
+                elif type_["value"] == "NUMBAR":
+                    self.variables[varident["value"]] = {"value": self.variables.get(varident["value"], 0), "type": "NUMBAR"}
+                elif type_["value"] == "YARN":
+                    self.variables[varident["value"]] = {"value": str(self.variables.get(varident["value"], "")), "type": "YARN"}
+                elif type_["value"] == "TROOF":
+                    self.variables[varident["value"]] = {"value": bool(self.variables.get(varident["value"], False)), "type": "TROOF"}
+                else:
+                    self.error(f"Unsupported type '{type_['value']}' after 'IS NOW A'")
+            else:
+                self.error(f"Unsupported type '{type_['value']}' after 'MAEK'")
+
+            return True
+
+        # Now check if it's a literal, variable, or expression
+        literal = self.parse_literal()  # This handles number, string, etc.
+        if literal:
+            self.it = literal["value"]  # Store the literal value in 'IT'
+            return True
+
+        # Check if it's a variable identifier (for variables)
+        varident = self.match("VARIABLE_IDENTIFIER")
+        if varident:
+            if varident["value"] in self.variables:
+                self.it = self.variables[varident["value"]]
+            else:
+                self.error(f"Variable '{varident['value']}' not declared.")
+            return True
+
+        return False
+    def parse_smoosh(self):
+            """Parse the SMOOSH operation: SMOOSH <expr> AN <expr> AN ... AN <expr>."""
+            operands = []  # List of operands to be concatenated
+
+            # Start parsing the first operand
+            operands.append(self.parse_expression())
+
+            # Continue parsing subsequent operands connected by AN or '+'
+            while self.match("KEYWORD", "AN") or self.match("CONCAT_OPERATOR", "+"):
+                operand = self.parse_expression()
+                operands.append(operand)
+
+            # Ensure the operands are implicitly cast to YARN and concatenate them
+            result = "".join([str(op) for op in operands])  # Concatenate all operands into a single string
+            self.it = result  # Set the result of SMOOSH to IT (the "return" value of the expression)
+            return result
+    
     def parse_print_list(self):
         """Parse a list of values or expressions: <expr> (AN <expr>)*."""
         if not self.parse_expression():
@@ -255,7 +322,7 @@ class Parser:
         # Expect OIC to end the conditional block
         if not self.match("KEYWORD", "OIC"):
             self.error("Expected 'OIC' to close 'O RLY?' block")
-
+    
     def parse_gimmeh(self):
         """Parse the GIMMEH statement: GIMMEH <varident>."""
         if not self.match("KEYWORD", "GIMMEH"):
@@ -274,6 +341,87 @@ class Parser:
                 return  # Exit on block terminators
             self.consume()
 
+    def parse_assignment(self, varident):
+        """Parse an assignment: varident R <expression>."""
+
+        if not varident:
+            self.error("Expected a variable identifier before 'R'")
+
+        if not self.match("KEYWORD", "R"):
+            self.error("Expected 'R' for assignment")
+
+        # Parse the expression to be assigned
+        if not self.parse_expression():
+            self.error("Expected an expression after 'R' for assignment")
+
+        # If variable doesn't exist in self.variables, initialize it with a default value
+        if varident["value"] not in self.variables:
+            self.variables[varident["value"]] = None
+
+        # After evaluating the expression, store the value in the variable
+        self.variables[varident["value"]] = self.it  # Store the result of the expression
+        return self.it
+    
+    def parse_is_now_a(self, varident):
+        """Parse 'IS NOW A' type casting: varident IS NOW A <type>."""
+        if not varident:
+            self.error("Expected a variable identifier before 'IS NOW A'")
+
+        if not self.match("KEYWORD", "IS NOW A"):
+            self.error("Expected 'IS NOW A' for typecasting")
+
+        # Now, we expect a type (NUMBR, NUMBAR, YARN, TROOF, etc.)
+        type_ = self.match("KEYWORD")
+        if not type_:
+            self.error("Expected a type after 'IS NOW A'")
+
+        # Handle the typecasting logic based on the type
+        if type_:
+            # Change the type of the variable without changing the value
+            if type_["value"] == "NUMBR":
+                self.variables[varident["value"]] = {"value": self.variables.get(varident["value"], 0), "type": "NUMBR"}
+            elif type_["value"] == "NUMBAR":
+                self.variables[varident["value"]] = {"value": self.variables.get(varident["value"], 0), "type": "NUMBAR"}
+            elif type_["value"] == "YARN":
+                self.variables[varident["value"]] = {"value": str(self.variables.get(varident["value"], "")), "type": "YARN"}
+            elif type_["value"] == "TROOF":
+                self.variables[varident["value"]] = {"value": bool(self.variables.get(varident["value"], False)), "type": "TROOF"}
+            else:
+                self.error(f"Unsupported type '{type_['value']}' after 'IS NOW A'")
+        else:
+            self.error(f"Unsupported type '{type_['value']}' after 'IS NOW A'")
+
+    def parse_maek(self):
+        """Parse explicit typecasting with 'MAEK': MAEK varident A <type>."""
+        varident = self.match("VARIABLE_IDENTIFIER")
+        if not varident:
+            self.error("Expected a variable identifier after 'MAEK'")
+
+        if not self.match("KEYWORD", "A"):
+            self.error("Expected 'A' after variable identifier")
+
+        # Parse the target type (NUMBR, NUMBAR, YARN, etc.)
+        type_ = self.match("KEYWORD")
+        if not type_:
+            self.error("Expected a type after 'A'")
+
+        # Typecast the variable and return the result in IT
+        if type_:
+            # Change the type of the variable without changing the value
+            if type_["value"] == "NUMBR":
+                self.variables[varident["value"]] = {"value": self.variables.get(varident["value"], 0), "type": "NUMBR"}
+            elif type_["value"] == "NUMBAR":
+                self.variables[varident["value"]] = {"value": self.variables.get(varident["value"], 0), "type": "NUMBAR"}
+            elif type_["value"] == "YARN":
+                self.variables[varident["value"]] = {"value": str(self.variables.get(varident["value"], "")), "type": "YARN"}
+            elif type_["value"] == "TROOF":
+                self.variables[varident["value"]] = {"value": bool(self.variables.get(varident["value"], False)), "type": "TROOF"}
+            else:
+                self.error(f"Unsupported type '{type_['value']}' after 'IS NOW A'")
+        else:
+            self.error(f"Unsupported type '{type_['value']}' after 'MAEK'")
+
+        return self.it
     def parse_statements(self):
         """Parse a sequence of statements within a block."""
         while self.peek():
@@ -298,15 +446,28 @@ class Parser:
             elif self.match("KEYWORD", "GIMMEH"):
                 self.current -= 1   
                 self.parse_gimmeh()
+            elif self.match("KEYWORD", "SMOOSH"):
+                self.current -= 1
+                self.parse_smoosh()
+            elif self.match("VARIABLE_IDENTIFIER"):
+                varident = self.peek()  # Get the current variable identifier
+                if self.match("KEYWORD", "R"):  # Check for the assignment operator 'R'
+                    # This ensures we correctly match the variable assignment syntax
+                    self.current -= 1  # Roll back to handle the assignment
+                    self.parse_assignment(varident)  # Pass the variable identifier to parse_assignment
+                elif self.match("KEYWORD", "IS NOW A"):
+                    self.current -= 1  
+                    self.parse_is_now_a(varident)
+            elif self.match("KEYWORD", "MAEK"):
+                self.current -= 1  
+                self.parse_maek()
             else:
                 self.error(f"Unexpected token inside block: {token}")
-
 
     def parse_program_structure(self):
         """Parse the program structure with support for comments and valid statements."""
         if not self.match("KEYWORD", "HAI"):
             self.error("Expected 'HAI' at the start of the program")
-
         if self.peek() and self.match("KEYWORD", "WAZZUP"):
             self.current -= 1  # Roll back to parse the WAZZUP block
             self.parse_wazzup()
