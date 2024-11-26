@@ -19,11 +19,28 @@ KEYWORDS = [
     "HAI", "KTHXBYE", "WAZZUP", "BUHBYE", "BTW", "OBTW", "TLDR", "I HAS A", 
     "ITZ", "R", "SUM OF", "DIFF OF", "PRODUKT OF", "QUOSHUNT OF", "MOD OF", "BIGGR OF", "SMALLR OF", 
     "BOTH OF", "EITHER OF", "WON OF", "NOT", "ANY OF", "ALL OF", "BOTH SAEM", "DIFFRINT", "SMOOSH", "MAEK", 
-    "A", "IS NOW A", "VISIBLE", "GIMMEH", "O RLY"+"?", "YA RLY", "MEBBE", "NO WAI", "OIC", "WTF?", "OMG", "OMGWTF", 
+    "A", "IS NOW A", "VISIBLE", "GIMMEH", r"\bO RLY?", "YA RLY", "MEBBE", "NO WAI", "OIC", "WTF?", "OMG", "OMGWTF", 
     "IM IN YR", "UPPIN", "NERFIN", "YR", "TIL", "WILE", "IM OUTTA YR", "HOW IZ I", "IF U SAY SO", "GTFO", 
     "FOUND YR", "I IZ", "MKAY", "AN"
 ]
 
+MULTIWORD_KEYWORDS = [
+    "O RLY?",
+    "YA RLY",
+    "NO WAI",
+    "I HAS A",
+    "ITZ",
+    "SUM OF",
+    "DIFF OF",
+    "PRODUKT OF",
+    "QUOSHUNT OF",
+    "MOD OF",
+    "BIGGR OF",
+    "SMALLR OF",
+    "BOTH OF",
+    "EITHER OF",
+    "WON OF",
+]
 # RegEx patterns for token types
 REGEX_PATTERNS = {
     TokenType.KEYWORD: r"\b(" + "|".join(KEYWORDS) + r")\b",
@@ -95,13 +112,18 @@ def tokenize_line(line, in_multiline_comment):
         tokens.append({"type": TokenType.COMMENT, "value": "BTW " + comment_content})
         return tokens, False  # No further processing for this line
 
-    # Match multi-word keywords and other tokens
+    # Match multi-word keywords first
+    for multiword in MULTIWORD_KEYWORDS:
+        if line.startswith(multiword):
+            tokens.append({"type": TokenType.KEYWORD, "value": multiword})
+            line = line[len(multiword):].strip()  # Remove matched keyword from the line
+            break
+
+    # Match single-word keywords and other tokens
     combined_pattern = r'"[^"]*"|' + REGEX_PATTERNS[TokenType.KEYWORD] + r'|[^\s]+'
-    
     for match in re.finditer(combined_pattern, line):
         token = match.group(0)
         token_type = determine_token_type(token)
-        print(token), print(token_type)
         tokens.append({"type": token_type, "value": token})
 
     return tokens, False

@@ -147,40 +147,52 @@ class Parser:
 
     def parse_orly(self):
         """Parse an if-then statement: O RLY? YA RLY ... NO WAI ... OIC."""
-        if not self.match("KEYWORD", "O RLY"):
+        if not self.match("KEYWORD", "O RLY?"):
             self.error("Expected 'O RLY?'")
 
-        if not self.match("KEYWORD", "YA RLY"):
-            self.error("Expected 'YA RLY' after 'O RLY?'")
+        # Check for YA RLY block
+        if self.match("KEYWORD", "YA RLY"):
+            if self.it == "WIN":
+                self.parse_statements()  # Parse true block
+            else:
+                self.skip_block()  # Skip the true block if IT is not WIN
 
-        # Parse YA RLY block
-        if self.it == "WIN":
-            self.parse_statements()  # Parse the true block
-            if self.match("KEYWORD", "NO WAI"):
-                self.skip_block()  # Skip the false block
-        elif self.match("KEYWORD", "NO WAI"):
-            self.parse_statements()  # Parse the false block
+        # Check for NO WAI block
+        if self.match("KEYWORD", "NO WAI"):
+            if self.it != "WIN":
+                self.parse_statements()  # Parse false block
+            else:
+                self.skip_block()  # Skip the false block if IT is WIN
 
+        # Expect OIC to end the conditional block
         if not self.match("KEYWORD", "OIC"):
-            self.error("Expected 'OIC' to end the 'O RLY?' block")
+            self.error("Expected 'OIC' to close 'O RLY?' block")
+
+    def skip_block(self):
+        """Skip over a block until encountering a terminating keyword."""
+        while self.peek():
+            token = self.peek()
+            if token["value"] in ["OIC", "NO WAI", "KTHXBYE"]:
+                return  # Exit on block terminators
+            self.consume()
 
     def parse_statements(self):
-        """Parse a sequence of statements."""
+        """Parse a sequence of statements within a block."""
         while self.peek():
-            if self.match("KEYWORD", "KTHXBYE") or self.match("KEYWORD", "OIC") or self.match("KEYWORD", "NO WAI"):
-                self.current -= 1  # Stop at these keywords
-                return
-            if self.match("KEYWORD", "VISIBLE"):
-                self.current -= 1
+            token = self.peek()
+            if token["value"] in ["OIC", "NO WAI", "KTHXBYE"]:
+                return  # Exit on block terminators
+            elif self.match("KEYWORD", "VISIBLE"):
+                self.current -= 1  # Allow parse_visible to handle it
                 self.parse_visible()
             elif self.match("KEYWORD", "I HAS A"):
-                self.current -= 1
+                self.current -= 1  # Allow parse_i_has_a to handle it
                 self.parse_i_has_a()
-            elif self.match("KEYWORD", "O RLY"):
-                self.current -= 1
+            elif self.match("KEYWORD", "O RLY?"):
+                self.current -= 1  # Allow nested conditional blocks
                 self.parse_orly()
             else:
-                self.error("Invalid statement inside block")
+                self.error(f"Unexpected token inside block: {token}")
 
     def parse_program_structure(self):
         """Parse the program structure with support for comments and valid statements."""

@@ -1,1 +1,1 @@
-Parsing failed: Expected 'YA RLY' after 'O RLY?'. Found {'type': 'UNKNOWN', 'value': '?'} at position 6.
+Parsing successful: Program structure is valid.
