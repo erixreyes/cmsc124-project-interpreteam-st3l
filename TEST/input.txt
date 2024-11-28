@@ -1,44 +1,47 @@
 HAI
-    WAZZUP
-        BTW variable dec
-        I HAS A x
-        I HAS A y
-    BUHBYE
+	WAZZUP
+		I HAS A choice
+		I HAS A input
+	BUHBYE
 
-    VISIBLE "x:" + WIN + ", y:" + WIN
-    x R WIN
-    y R WIN
+	BTW if w/o MEBBE, 1 only, everything else is invalid
+	VISIBLE "1. Compute age"
+	VISIBLE "2. Compute tip"
+	VISIBLE "3. Compute square area"
+	VISIBLE "0. Exit"
 
-    VISIBLE BOTH OF x AN y
-    VISIBLE EITHER OF x AN y
-    VISIBLE WON OF x AN y
-    VISIBLE NOT x
-    VISIBLE ALL OF x AN x AN x AN y MKAY
-    VISIBLE ANY OF y AN y AN y AN 0 MKAY
-    VISIBLE ANY OF BOTH OF x AN EITHER OF NOT x AN y AN y AN NOT y MKAY
-    VISIBLE BOTH OF x AN EITHER OF NOT x AN y
+	VISIBLE "Choice: "
+	GIMMEH choice
 
-    VISIBLE "x:" +  FAIL + ", y:"+  WIN
-    x R FAIL
+	BOTH SAEM choice AN 1
+	O RLY?
+		YA RLY
+			VISIBLE "Enter birth year: "
+			GIMMEH input
+			VISIBLE DIFF OF 2022 AN input
+OBTW
+	BTW uncomment this portion if you have MEBBE
+	BTW else, this portion should be ignored
 
-    VISIBLE BOTH OF x AN y
-    VISIBLE EITHER OF x AN y
-    VISIBLE WON OF x AN y
-    VISIBLE NOT x
-    VISIBLE ALL OF x AN x AN x AN y MKAY
-    VISIBLE ANY OF y AN y AN y AN 0 MKAY
-    VISIBLE ANY OF BOTH OF x AN EITHER OF NOT x AN y AN y AN NOT y MKAY
-    VISIBLE BOTH OF x AN EITHER OF NOT x AN y
+		MEBBE BOTH SAEM choice AN 2
+			VISIBLE "Enter bill cost: "
+			GIMMEH input
+			VISIBLE "Tip: " PRODUKT OF input AN 0.1
+		MEBBE BOTH SAEM choice AN 3
+			VISIBLE "Enter width: "
+			GIMMEH input
+			VISIBLE "Square Area: " PRODUKT OF input AN input
+		MEBBE BOTH SAEM choice AN 0
+			VISIBLE "Goodbye"
+TLDR
+		NO WAI
+			VISIBLE "Invalid Input!"
+	OIC
 
-    VISIBLE "x:" + FAIL + ", y:" + FAIL
-    y R FAIL
+	DIFFRINT BIGGR OF 3 AN choice AN 3
+	O RLY?
+		YA RLY
+			VISIBLE "Invalid input is > 3."
+	OIC
 
-    VISIBLE BOTH OF x AN y
-    VISIBLE EITHER OF x AN y
-    VISIBLE WON OF x AN y
-    VISIBLE NOT x
-    VISIBLE ALL OF x AN x AN x AN y MKAY
-    VISIBLE ANY OF y AN y AN y AN 0 MKAY
-    VISIBLE ANY OF BOTH OF x AN EITHER OF NOT x AN y AN y AN NOT y MKAY
-    VISIBLE BOTH OF x AN EITHER OF NOT x AN y
 KTHXBYE

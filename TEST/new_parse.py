@@ -108,7 +108,55 @@ class Parser:
             elif operator == "WON OF":
                 self.it = bool(operand1) ^ bool(operand2)  # XOR operation
             return True
+            # Handle comparison operators (==, !=, <, >, >=, <=)
+        if self.match("KEYWORD", "BOTH SAEM"):
+            left_operand = self.parse_expression()  # First operand
+            if not self.match("KEYWORD", "AN"):
+                self.error("Expected 'AN' after the first operand in 'BOTH SAEM'")
+            right_operand = self.parse_expression()  # Second operand
+            self.it = left_operand == right_operand  # Perform equality check
+            return True
 
+        if self.match("KEYWORD", "DIFFRINT"):
+            left_operand = self.parse_expression()  # First operand
+            if not self.match("KEYWORD", "AN"):
+                self.error("Expected 'AN' after the first operand in 'DIFFRINT'")
+            right_operand = self.parse_expression()  # Second operand
+            self.it = left_operand != right_operand  # Perform inequality check
+            return True
+
+        if self.match("KEYWORD", "BIGGR OF"):
+            left_operand = self.parse_expression()  # First operand
+            if not self.match("KEYWORD", "AN"):
+                self.error("Expected 'AN' after the first operand in 'BIGGR OF'")
+            right_operand = self.parse_expression()  # Second operand
+            self.it = left_operand > right_operand  # Perform greater-than check
+            return True
+
+        if self.match("KEYWORD", "SMALLR OF"):
+            left_operand = self.parse_expression()  # First operand
+            if not self.match("KEYWORD", "AN"):
+                self.error("Expected 'AN' after the first operand in 'SMALLR OF'")
+            right_operand = self.parse_expression()  # Second operand
+            self.it = left_operand < right_operand  # Perform less-than check
+            return True
+
+        if self.match("KEYWORD", "BIGGR OF"):
+            left_operand = self.parse_expression()  # First operand
+            if not self.match("KEYWORD", "AN"):
+                self.error("Expected 'AN' after the first operand in 'BIGGR OF'")
+            right_operand = self.parse_expression()  # Second operand
+            self.it = left_operand >= right_operand  # Perform greater-than or equal check
+            return True
+
+        if self.match("KEYWORD", "SMALLR OF"):
+            left_operand = self.parse_expression()  # First operand
+            if not self.match("KEYWORD", "AN"):
+                self.error("Expected 'AN' after the first operand in 'SMALLR OF'")
+            right_operand = self.parse_expression()  # Second operand
+            self.it = left_operand <= right_operand  # Perform less-than or equal check
+            return True
+    
         # Handle NOT (unary operator)
         if self.match("KEYWORD", "NOT"):
             if not self.parse_expression():
@@ -263,14 +311,11 @@ class Parser:
         """Parse a multiline comment: OBTW ... TLDR."""
         if not self.match("MULTILINE_COMMENT_START", "OBTW"):
             self.error("Expected 'OBTW' to start a multiline comment")
-
+        
         # Ensure there's no other token after OBTW on the same line
         if self.peek() and self.peek()["type"] != "MULTILINE_COMMENT_END":
             self.error("Invalid token after 'OBTW'. It should be the only token on the line.")
         
-        # Consume the OBTW token
-        self.consume()
-
         # Now, we expect the next token to be 'TLDR' on a new line
         if not self.match("MULTILINE_COMMENT_END", "TLDR"):
             self.error("Expected 'TLDR' after 'OBTW'")
@@ -509,6 +554,10 @@ class Parser:
         """Parse a sequence of statements within a block."""
         while self.peek():
             token = self.peek()
+            if token["type"] == "MULTILINE_COMMENT_START" and token["value"] == "OBTW":
+                self.parse_multiline_comment()  # Handle the multiline comment
+                continue  # Skip to the next token after consuming the comment
+
             if token["value"] in ["OIC", "NO WAI", "MEBBE", "IM OUTTA YR", "KTHXBYE"]:
                 return  # Exit on block terminators
             elif self.match("KEYWORD", "VISIBLE"):

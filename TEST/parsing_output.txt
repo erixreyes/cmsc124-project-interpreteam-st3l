@@ -1,1 +1,1 @@
-Parsing successful: Program structure is valid.
+Parsing failed: Unexpected token inside block: {'type': 'KEYWORD', 'value': 'BOTH SAEM'}. Found {'type': 'KEYWORD', 'value': 'BOTH SAEM'} at position 20.
