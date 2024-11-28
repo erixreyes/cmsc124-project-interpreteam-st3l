@@ -109,20 +109,22 @@ class Parser:
                 self.it = bool(operand1) ^ bool(operand2)  # XOR operation
             return True
             # Handle comparison operators (==, !=, <, >, >=, <=)
-        if self.match("KEYWORD", "BOTH SAEM"):
-            left_operand = self.parse_expression()  # First operand
-            if not self.match("KEYWORD", "AN"):
-                self.error("Expected 'AN' after the first operand in 'BOTH SAEM'")
-            right_operand = self.parse_expression()  # Second operand
-            self.it = left_operand == right_operand  # Perform equality check
-            return True
+        if self.match("KEYWORD", "BOTH SAEM") or self.match("KEYWORD", "DIFFRINT"):
+            operator = self.tokens[self.current - 1]["value"]
+            if not self.parse_expression():  # Parse the first operand
+                self.error(f"Expected the first operand for '{operator}'")
+            operand1 = self.it
+            if not self.match("KEYWORD", "AN"):  # Ensure 'AN' is present between operands
+                self.error(f"Expected 'AN' after the first operand for '{operator}'")
+            if not self.parse_expression():  # Parse the second operand
+                self.error(f"Expected the second operand for '{operator}'")
+            operand2 = self.it
 
-        if self.match("KEYWORD", "DIFFRINT"):
-            left_operand = self.parse_expression()  # First operand
-            if not self.match("KEYWORD", "AN"):
-                self.error("Expected 'AN' after the first operand in 'DIFFRINT'")
-            right_operand = self.parse_expression()  # Second operand
-            self.it = left_operand != right_operand  # Perform inequality check
+            # Handle the equality comparisons
+            if operator == "BOTH SAEM":
+                self.it = operand1 == operand2  # 'BOTH SAEM' means equal comparison
+            elif operator == "DIFFRINT":
+                self.it = operand1 != operand2  # 'DIFFRINT' means not equal comparison
             return True
 
         if self.match("KEYWORD", "BIGGR OF"):
@@ -636,6 +638,9 @@ class Parser:
             elif self.match("KEYWORD", "MAEK A"):
                 self.current -= 1  
                 self.parse_maek()
+            elif self.match("KEYWORD", "BOTH SAEM") or self.match("KEYWORD", "DIFFRINT"):
+                self.current -= 1  # Allow parse_expression to handle it
+                self.parse_expression()
             else:
                 self.error(f"Unexpected token inside block: {token}")
 
