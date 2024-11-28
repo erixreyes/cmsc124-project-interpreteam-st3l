@@ -316,6 +316,7 @@ class Parser:
         if self.peek() and self.peek()["type"] != "MULTILINE_COMMENT_END":
             self.error("Invalid token after 'OBTW'. It should be the only token on the line.")
         
+
         # Now, we expect the next token to be 'TLDR' on a new line
         if not self.match("MULTILINE_COMMENT_END", "TLDR"):
             self.error("Expected 'TLDR' after 'OBTW'")
@@ -400,7 +401,7 @@ class Parser:
     def parse_orly(self):
         """Parse an if-then statement: O RLY? YA RLY ... MEBBE ... NO WAI ... OIC."""
         if not self.match("KEYWORD", "O RLY?"):
-            self.error("Expected 'O RLY?'")
+            self.error("Expected 'O RLY?' to start the block")
 
         executed = False  # Track whether any block has executed
 
@@ -433,10 +434,42 @@ class Parser:
             else:
                 self.skip_block()  # Skip else block if a previous block executed
 
-        # Expect OIC to end the conditional block
+        # Ensure the block ends with OIC (closing the O RLY? block)
         if not self.match("KEYWORD", "OIC"):
             self.error("Expected 'OIC' to close 'O RLY?' block")
-    
+
+    def parse_wtf(self):
+        """Parse the WTF? block (switch-case statement) with OMG, OMGWTF, and OIC."""
+        if not self.match("KEYWORD", "WTF?"):
+            self.error("Expected 'WTF?' to start switch-case block.")
+
+        # Store the value of IT (the value to compare against)
+        wtf_value = self.it
+
+        case_matched = False
+        while self.match("KEYWORD", "OMG"):
+            case_value = self.parse_expression()  # Expecting a literal after 'OMG'
+            
+            # Compare the case value with IT
+            if case_value == wtf_value:
+                # If it matches, execute the block under this case
+                case_matched = True
+                self.parse_statements()  # Parse the code block under the matched case
+                if self.match("KEYWORD", "GTFO"):  # If GTFO is found, break out of the switch-case
+                    break
+            else:
+                self.skip_block()  # Skip the block if case doesn't match
+
+        # Handle the default case (OMGWTF)
+        if not case_matched and self.match("KEYWORD", "OMGWTF"):
+            self.parse_statements()  # Execute default case block
+            if self.match("KEYWORD", "GTFO"):  # End the default case block
+                return
+
+        # Now we expect OIC to close the switch-case block
+        if not self.match("KEYWORD", "OIC"):
+            self.error("Expected 'OIC' to close switch-case block.")
+            
     def parse_gimmeh(self):
         """Parse the GIMMEH statement: GIMMEH <varident>."""
         if not self.match("KEYWORD", "GIMMEH"):
@@ -569,6 +602,9 @@ class Parser:
             elif self.match("KEYWORD", "O RLY?"):
                 self.current -= 1  # Allow nested conditional blocks
                 self.parse_orly()
+            elif self.match("KEYWORD", "WTF?"):
+                self.current -= 1
+                self.parse_wtf()
             elif self.match("KEYWORD", "IM IN YR"):
                 self.current -= 1  # Allow nested loops
                 self.parse_loop()
@@ -594,8 +630,6 @@ class Parser:
                     self.current -= 1  # Roll back to allow parse_expression to handle it
                     self.parse_expression()
                 # Handle typecasting (if 'IS NOW A' is found)
-                
-                
             elif self.match("KEYWORD", "MAEK A"):
                 self.current -= 1  
                 self.parse_maek()

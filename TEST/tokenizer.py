@@ -21,11 +21,19 @@ KEYWORDS = [
     "ITZ", "R", "SUM OF", "DIFF OF", "PRODUKT OF", "QUOSHUNT OF", "MOD OF", "BIGGR OF", "SMALLR OF", 
     "BOTH OF", "EITHER OF", "WON OF", "NOT", "ANY OF", "ALL OF", "BOTH SAEM", "DIFFRINT", "SMOOSH", "MAEK A", 
     "IS NOW A", "VISIBLE", "GIMMEH", "O RLY?", "YA RLY", "MEBBE", "NO WAI", "OIC", "TIL", "WILE", 
-    "IM IN YR", "IM OUTTA YR", "MKAY", "AN", "NUMBR", "NUMBAR", "YARN", "TROOF"
+    "IM IN YR", "IM OUTTA YR", "MKAY", "AN", "NUMBR", "NUMBAR", "YARN", "TROOF", "OMG"
 ]
 
 # Multi-word keywords need stricter handling
-MULTIWORD_KEYWORDS = sorted([kw for kw in KEYWORDS if " " in kw], key=len, reverse=True)
+MULTIWORD_KEYWORDS = [
+    "I HAS A",
+    "SUM OF", "DIFF OF", "PRODUKT OF", "QUOSHUNT OF", "MOD OF", "BIGGR OF", "SMALLR OF", 
+    "BOTH OF", "EITHER OF", "WON OF", "ANY OF", "ALL OF", 
+    "BOTH SAEM", "DIFFRINT", "MAEK A", 
+    "IS NOW A", "O RLY?", "YA RLY", "MEBBE", "NO WAI", 
+    "IM IN YR", "IM OUTTA YR", 
+    "OIC", "WTF?"
+]
 
 # RegEx patterns for token types
 REGEX_PATTERNS = {
@@ -85,7 +93,14 @@ def tokenize_line(line, in_multiline_comment):
         # Add the entire BTW comment as a single token
         tokens.append({"type": TokenType.COMMENT, "value": "BTW " + btw_comment})
         return tokens, False  # Stop processing this line further
-
+    
+    # Match multi-word keywords first CRUCIAL FOR O RLY? WTF?
+    for multiword in MULTIWORD_KEYWORDS:
+        if line.startswith(multiword):
+            tokens.append({"type": TokenType.KEYWORD, "value": multiword})
+            line = line[len(multiword):].strip()  # Remove matched keyword from the line
+            break
+        
     # Tokenize the rest of the line as usual
     combined_pattern = r'"[^"]*"|' + REGEX_PATTERNS[TokenType.KEYWORD] + r'|[^\s]+'
     for match in re.finditer(combined_pattern, line):
@@ -94,35 +109,6 @@ def tokenize_line(line, in_multiline_comment):
         tokens.append({"type": token_type, "value": token})
 
     return tokens, False
-
-def tokenize_string(line):
-    """Tokenize a string into separate tokens."""
-    tokens = []
-    
-    # Handle multi-word keywords first
-    while line:
-        matched = False
-        for multiword in MULTIWORD_KEYWORDS:
-            if line.startswith(multiword):
-                tokens.append({"type": TokenType.KEYWORD, "value": multiword})
-                line = line[len(multiword):].strip()
-                matched = True
-                break
-        if matched:
-            continue
-
-        # Tokenize remaining parts
-        combined_pattern = r'"[^"]*"|' + REGEX_PATTERNS[TokenType.KEYWORD] + r'|\+|[^\s]+'
-        for match in re.finditer(combined_pattern, line):
-            token = match.group(0)
-            token_type = determine_token_type(token)
-            tokens.append({"type": token_type, "value": token})
-            line = line[len(token):].strip()
-            break
-        else:
-            break  # No match found, exit loop
-
-    return tokens
 
 # Main function
 def main():

@@ -1,1 +1,1 @@
-Parsing failed: Unexpected token inside block: {'type': 'KEYWORD', 'value': 'BOTH SAEM'}. Found {'type': 'KEYWORD', 'value': 'BOTH SAEM'} at position 20.
+Parsing failed: Expected 'TIL' or 'WILE' after loop name. Found {'type': 'VARIABLE_IDENTIFIER', 'value': 'UPPIN'} at position 16.
