@@ -7,73 +7,228 @@
 {"type": "VARIABLE_IDENTIFIER", "value": "y"}
 {"type": "KEYWORD", "value": "BUHBYE"}
 {"type": "KEYWORD", "value": "VISIBLE"}
-{"type": "YARN_LITERAL", "value": "\"Hello! Please enter two strings:\""}
-{"type": "KEYWORD", "value": "VISIBLE"}
-{"type": "YARN_LITERAL", "value": "\"String 1: \""}
-{"type": "KEYWORD", "value": "GIMMEH"}
-{"type": "VARIABLE_IDENTIFIER", "value": "x"}
-{"type": "KEYWORD", "value": "VISIBLE"}
-{"type": "YARN_LITERAL", "value": "\"String 2: \""}
-{"type": "KEYWORD", "value": "GIMMEH"}
-{"type": "VARIABLE_IDENTIFIER", "value": "y"}
-{"type": "KEYWORD", "value": "VISIBLE"}
-{"type": "KEYWORD", "value": "SMOOSH"}
-{"type": "VARIABLE_IDENTIFIER", "value": "x"}
-{"type": "KEYWORD", "value": "AN"}
-{"type": "VARIABLE_IDENTIFIER", "value": "y"}
-{"type": "KEYWORD", "value": "VISIBLE"}
-{"type": "KEYWORD", "value": "SMOOSH"}
-{"type": "VARIABLE_IDENTIFIER", "value": "x"}
-{"type": "KEYWORD", "value": "AN"}
-{"type": "VARIABLE_IDENTIFIER", "value": "x"}
-{"type": "KEYWORD", "value": "AN"}
-{"type": "VARIABLE_IDENTIFIER", "value": "x"}
-{"type": "KEYWORD", "value": "AN"}
-{"type": "VARIABLE_IDENTIFIER", "value": "y"}
-{"type": "KEYWORD", "value": "AN"}
-{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "YARN_LITERAL", "value": "\"x:\""}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "TROOF_LITERAL", "value": "WIN"}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "YARN_LITERAL", "value": "\", y:\""}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "TROOF_LITERAL", "value": "WIN"}
 {"type": "VARIABLE_IDENTIFIER", "value": "x"}
 {"type": "KEYWORD", "value": "R"}
-{"type": "KEYWORD", "value": "SMOOSH"}
+{"type": "TROOF_LITERAL", "value": "WIN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "R"}
+{"type": "TROOF_LITERAL", "value": "WIN"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "KEYWORD", "value": "BOTH OF"}
 {"type": "VARIABLE_IDENTIFIER", "value": "x"}
 {"type": "KEYWORD", "value": "AN"}
 {"type": "VARIABLE_IDENTIFIER", "value": "y"}
-{"type": "VARIABLE_IDENTIFIER", "value": "y"}
-{"type": "KEYWORD", "value": "R"}
-{"type": "NUMBR_LITERAL", "value": "100"}
 {"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "KEYWORD", "value": "EITHER OF"}
 {"type": "VARIABLE_IDENTIFIER", "value": "x"}
 {"type": "KEYWORD", "value": "AN"}
-{"type": "NUMBR_LITERAL", "value": "52615"}
-{"type": "KEYWORD", "value": "AN"}
 {"type": "VARIABLE_IDENTIFIER", "value": "y"}
-{"type": "KEYWORD", "value": "AN"}
-{"type": "KEYWORD", "value": "MOD OF"}
-{"type": "NUMBR_LITERAL", "value": "10"}
-{"type": "KEYWORD", "value": "AN"}
-{"type": "NUMBR_LITERAL", "value": "6"}
-{"type": "KEYWORD", "value": "AN"}
-{"type": "YARN_LITERAL", "value": "\"End!\""}
 {"type": "KEYWORD", "value": "VISIBLE"}
-{"type": "NUMBR_LITERAL", "value": "10"}
+{"type": "KEYWORD", "value": "WON OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
 {"type": "KEYWORD", "value": "AN"}
 {"type": "VARIABLE_IDENTIFIER", "value": "y"}
-{"type": "VARIABLE_IDENTIFIER", "value": "y"}
-{"type": "KEYWORD", "value": "IS NOW A"}
-{"type": "KEYWORD", "value": "NUMBAR"}
 {"type": "KEYWORD", "value": "VISIBLE"}
-{"type": "NUMBR_LITERAL", "value": "10"}
+{"type": "KEYWORD", "value": "NOT"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "KEYWORD", "value": "ALL OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
 {"type": "KEYWORD", "value": "AN"}
 {"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "MKAY"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "KEYWORD", "value": "ANY OF"}
 {"type": "VARIABLE_IDENTIFIER", "value": "y"}
-{"type": "KEYWORD", "value": "R"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "AN"}
 {"type": "NUMBR_LITERAL", "value": "0"}
+{"type": "KEYWORD", "value": "MKAY"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "KEYWORD", "value": "ANY OF"}
+{"type": "KEYWORD", "value": "BOTH OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "KEYWORD", "value": "EITHER OF"}
+{"type": "KEYWORD", "value": "NOT"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "KEYWORD", "value": "NOT"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "MKAY"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "KEYWORD", "value": "BOTH OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "KEYWORD", "value": "EITHER OF"}
+{"type": "KEYWORD", "value": "NOT"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "YARN_LITERAL", "value": "\"x:\""}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "TROOF_LITERAL", "value": "FAIL"}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "YARN_LITERAL", "value": "\", y:\""}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "TROOF_LITERAL", "value": "WIN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "R"}
+{"type": "TROOF_LITERAL", "value": "FAIL"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "KEYWORD", "value": "BOTH OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "KEYWORD", "value": "EITHER OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "KEYWORD", "value": "WON OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "KEYWORD", "value": "NOT"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "KEYWORD", "value": "ALL OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "MKAY"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "KEYWORD", "value": "ANY OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "NUMBR_LITERAL", "value": "0"}
+{"type": "KEYWORD", "value": "MKAY"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "KEYWORD", "value": "ANY OF"}
+{"type": "KEYWORD", "value": "BOTH OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "KEYWORD", "value": "EITHER OF"}
+{"type": "KEYWORD", "value": "NOT"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "KEYWORD", "value": "NOT"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "MKAY"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "KEYWORD", "value": "BOTH OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "KEYWORD", "value": "EITHER OF"}
+{"type": "KEYWORD", "value": "NOT"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "YARN_LITERAL", "value": "\"x:\""}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "TROOF_LITERAL", "value": "FAIL"}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "YARN_LITERAL", "value": "\", y:\""}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "TROOF_LITERAL", "value": "FAIL"}
 {"type": "VARIABLE_IDENTIFIER", "value": "y"}
 {"type": "KEYWORD", "value": "R"}
-{"type": "KEYWORD", "value": "MAEK"}
-{"type": "VARIABLE_IDENTIFIER", "value": "y"}
-{"type": "KEYWORD", "value": "A"}
-{"type": "KEYWORD", "value": "NUMBR"}
+{"type": "TROOF_LITERAL", "value": "FAIL"}
 {"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "KEYWORD", "value": "BOTH OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "KEYWORD", "value": "EITHER OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "KEYWORD", "value": "WON OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "KEYWORD", "value": "NOT"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "KEYWORD", "value": "ALL OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "MKAY"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "KEYWORD", "value": "ANY OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "NUMBR_LITERAL", "value": "0"}
+{"type": "KEYWORD", "value": "MKAY"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "KEYWORD", "value": "ANY OF"}
+{"type": "KEYWORD", "value": "BOTH OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "KEYWORD", "value": "EITHER OF"}
+{"type": "KEYWORD", "value": "NOT"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "KEYWORD", "value": "NOT"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "MKAY"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "KEYWORD", "value": "BOTH OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "KEYWORD", "value": "EITHER OF"}
+{"type": "KEYWORD", "value": "NOT"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
 {"type": "VARIABLE_IDENTIFIER", "value": "y"}
 {"type": "KEYWORD", "value": "KTHXBYE"}

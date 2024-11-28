@@ -4,26 +4,41 @@ HAI
         I HAS A x
         I HAS A y
     BUHBYE
-    
-    VISIBLE "Hello! Please enter two strings:"
-    VISIBLE "String 1: "
-    GIMMEH x
-    VISIBLE "String 2: "
-    GIMMEH y
 
-    VISIBLE SMOOSH x AN y
+    VISIBLE "x:" + WIN + ", y:" + WIN
+    x R WIN
+    y R WIN
 
-    VISIBLE SMOOSH x AN x AN x AN y AN y
+    VISIBLE BOTH OF x AN y
+    VISIBLE EITHER OF x AN y
+    VISIBLE WON OF x AN y
+    VISIBLE NOT x
+    VISIBLE ALL OF x AN x AN x AN y MKAY
+    VISIBLE ANY OF y AN y AN y AN 0 MKAY
+    VISIBLE ANY OF BOTH OF x AN EITHER OF NOT x AN y AN y AN NOT y MKAY
+    VISIBLE BOTH OF x AN EITHER OF NOT x AN y
 
-    x R SMOOSH x AN y
-    y R 100
-    VISIBLE x AN 52615 AN y AN MOD OF 10 AN 6 AN "End!"
+    VISIBLE "x:" +  FAIL + ", y:"+  WIN
+    x R FAIL
 
-    VISIBLE 10 AN y
-    y IS NOW A NUMBAR
-    VISIBLE 10 AN y
+    VISIBLE BOTH OF x AN y
+    VISIBLE EITHER OF x AN y
+    VISIBLE WON OF x AN y
+    VISIBLE NOT x
+    VISIBLE ALL OF x AN x AN x AN y MKAY
+    VISIBLE ANY OF y AN y AN y AN 0 MKAY
+    VISIBLE ANY OF BOTH OF x AN EITHER OF NOT x AN y AN y AN NOT y MKAY
+    VISIBLE BOTH OF x AN EITHER OF NOT x AN y
 
-    y R 0
-    y R MAEK y A NUMBR
-    VISIBLE y
+    VISIBLE "x:" + FAIL + ", y:" + FAIL
+    y R FAIL
+
+    VISIBLE BOTH OF x AN y
+    VISIBLE EITHER OF x AN y
+    VISIBLE WON OF x AN y
+    VISIBLE NOT x
+    VISIBLE ALL OF x AN x AN x AN y MKAY
+    VISIBLE ANY OF y AN y AN y AN 0 MKAY
+    VISIBLE ANY OF BOTH OF x AN EITHER OF NOT x AN y AN y AN NOT y MKAY
+    VISIBLE BOTH OF x AN EITHER OF NOT x AN y
 KTHXBYE
