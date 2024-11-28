@@ -24,7 +24,8 @@ class Parser:
         self.variables = {}  # Store declared variables
         self.it = None  # Represent the IT variable
         self.inside_wazzup = False 
-        
+        self.functions = {}  # Initialize the functions dictionary to store defined functions
+
     def peek(self):
         """Peek at the current token."""
         while self.current < len(self.tokens):
@@ -242,6 +243,43 @@ class Parser:
             # Handle typecasting (if 'IS NOW A' is found)
             elif self.match("KEYWORD", "IS NOW A"):  # If it's a type-casting operation
                 self.parse_is_now_a(varident)  # Pass the variable identifier to handle typecasting
+
+               # Handle function call (I IZ <function_name> [YR <expressions>])
+        if self.match("KEYWORD", "I IZ"):
+            func_name_token = self.match("VARIABLE_IDENTIFIER")
+            if not func_name_token:
+                self.error("Expected a function name after 'I IZ'")
+
+            func_name = func_name_token["value"]
+
+            # Check if the function exists
+            if func_name not in self.functions:
+                self.error(f"Function '{func_name}' not defined.")
+
+            # Parse the arguments passed to the function
+            arguments = []
+            if self.match("KEYWORD", "YR"):
+                while True:
+                    argument = self.parse_expression()  # Parse each argument
+                    arguments.append(self.it)  # Store the argument value in 'IT'
+                    if not self.match("KEYWORD", "AN"):
+                        break
+
+            # Ensure that the number of arguments matches the function's parameters
+            func_def = self.functions[func_name]
+            if len(arguments) != len(func_def["parameters"]):
+                self.error(f"Function '{func_name}' expects {len(func_def['parameters'])} arguments, but {len(arguments)} were provided.")
+
+            # Store arguments in the function's local scope
+            local_variables = {}
+            for param, arg in zip(func_def["parameters"], arguments):
+                local_variables[param] = arg
+
+            # Execute the function body
+            self.execute_function(func_name, func_def["body"], local_variables)
+
+            # Return the result stored in IT
+            return self.it
         return False
 
     
@@ -569,7 +607,78 @@ class Parser:
             return False  # FAIL
         else:
             return True  # WIN
-    
+    def parse_function_definition(self):
+        """Parse a function definition: HOW IZ I <function name> [YR <parameters>] ... IF U SAY SO."""
+        if not self.match("KEYWORD", "HOW IZ I"):
+            self.error("Expected 'HOW IZ I' to start a function definition")
+
+        # Parse the function name
+        func_name = self.match("VARIABLE_IDENTIFIER")
+        if not func_name:
+            self.error("Expected a function name after 'HOW IZ I'")
+
+        func_name = func_name["value"]
+
+        # Parse the parameter list
+        parameters = []
+        if self.match("KEYWORD", "YR"):
+            while True:
+                param = self.match("VARIABLE_IDENTIFIER")
+                if not param:
+                    self.error("Expected a parameter name after 'YR'")
+                parameters.append(param["value"])
+
+                # Check for "AN YR" sequence
+                if self.match("KEYWORD", "AN"):
+                    if not self.match("KEYWORD", "YR"):
+                        self.error("Expected 'YR' after 'AN' for additional parameters")
+                else:
+                    break  # No more parameters
+
+        # Temporarily save the current variables for the function scope
+        previous_variables = self.variables.copy()  # Save current variable state
+        self.variables = {param: None for param in parameters}  # Initialize function parameters as variables
+
+        # Parse the function body
+        body_statements = []
+        while not self.match("KEYWORD", "IF U SAY SO"):
+            if not self.peek():
+                self.error("Unterminated function body; expected 'IF U SAY SO'")
+            
+            # Parse statements specifically for the function body
+            token = self.peek()
+            if token["value"] in ["IF U SAY SO"]:
+                break  # Ensure we stop at the function terminator
+            body_statements.append(self.parse_statements())  # Collect statements in the function body
+
+        # Restore the global variable state
+        self.variables = previous_variables
+
+        # Save the function in the function table
+        self.functions[func_name] = {
+            "parameters": parameters,
+            "body": body_statements
+        }
+        print(f"Function '{func_name}' defined with parameters {parameters}")
+
+    def execute_function(self, func_name, body_statements, local_variables):
+        """Execute a function body with local variables."""
+        # Store the local variables in the parser's scope
+        self.variables.update(local_variables)
+
+        # Parse the function body
+        for statement in body_statements:
+            self.parse_statements()  # Execute each statement in the function body
+
+        # Handle return statement (FOUND YR <expression>)
+        if self.match("KEYWORD", "FOUND YR"):
+            self.parse_expression()  # Parse the return expression
+            self.it = self.it  # Store the result in IT
+
+        # Handle GTFO (no return value)
+        elif self.match("KEYWORD", "GTFO"):
+            self.it = "NOOB"  # No return value in case of GTFO
+            
     def parse_literal(self):
         """Parse a literal: numbr, numbar, yarn, troof."""
         # Check for TROOF literal (WIN or FAIL)
@@ -596,7 +705,7 @@ class Parser:
                 self.parse_multiline_comment()  # Handle the multiline comment
                 continue  # Skip to the next token after consuming the comment
 
-            if token["value"] in ["OIC", "NO WAI", "MEBBE", "IM OUTTA YR", "KTHXBYE"]:
+            if token["value"] in ["OIC", "NO WAI", "MEBBE", "IM OUTTA YR", "KTHXBYE", "IF U SAY SO"]:
                 return  # Exit on block terminators
             elif self.match("KEYWORD", "VISIBLE"):
                 self.current -= 1  # Allow parse_visible to handle it
@@ -641,6 +750,9 @@ class Parser:
             elif self.match("KEYWORD", "BOTH SAEM") or self.match("KEYWORD", "DIFFRINT"):
                 self.current -= 1  # Allow parse_expression to handle it
                 self.parse_expression()
+            elif self.match("KEYWORD", "HOW IZ I"):
+                self.current -= 1 
+                self.parse_function_definition()
             else:
                 self.error(f"Unexpected token inside block: {token}")
 
@@ -648,6 +760,12 @@ class Parser:
         """Parse the program structure with support for comments and valid statements."""
         if not self.match("KEYWORD", "HAI"):
             self.error("Expected 'HAI' at the start of the program")
+
+        # Allow function declarations before WAZZUP
+        while self.match("KEYWORD", "HOW IZ I"):  # Function declarations can appear before WAZZUP
+            self.parse_function_definition()  # Handle function definition
+
+        # Parse the WAZZUP block for variable declarations
         if self.peek() and self.match("KEYWORD", "WAZZUP"):
             self.current -= 1  # Roll back to parse the WAZZUP block
             self.parse_wazzup()
@@ -658,7 +776,7 @@ class Parser:
             if self.match("KEYWORD", "KTHXBYE"):
                 print("Program structure validated: HAI and KTHXBYE are present, with valid statements.")
                 return
-            self.parse_statements()
+            self.parse_statements()  # Parse the rest of the statements
 
 # Main execution
 def main():

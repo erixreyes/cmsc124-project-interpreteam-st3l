@@ -32,7 +32,7 @@ MULTIWORD_KEYWORDS = [
     "BOTH SAEM", "DIFFRINT", "MAEK A", 
     "IS NOW A", "O RLY?", "YA RLY", "MEBBE", "NO WAI", 
     "IM IN YR", "IM OUTTA YR", 
-    "OIC", "WTF?"
+    "OIC", "WTF?", "HOW IZ I", "IF U SAY SO", "FOUND YR", "GTFO"
 ]
 
 # RegEx patterns for token types

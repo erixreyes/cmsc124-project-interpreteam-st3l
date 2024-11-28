@@ -1,54 +1,22 @@
 {"type": "KEYWORD", "value": "HAI"}
 {"type": "KEYWORD", "value": "WAZZUP"}
 {"type": "KEYWORD", "value": "I HAS A"}
-{"type": "VARIABLE_IDENTIFIER", "value": "choice"}
+{"type": "VARIABLE_IDENTIFIER", "value": "num1"}
 {"type": "KEYWORD", "value": "I HAS A"}
-{"type": "VARIABLE_IDENTIFIER", "value": "input"}
+{"type": "VARIABLE_IDENTIFIER", "value": "num2"}
 {"type": "KEYWORD", "value": "BUHBYE"}
-{"type": "COMMENT", "value": "BTW if w/o MEBBE, 1 only, everything else is invalid"}
-{"type": "KEYWORD", "value": "VISIBLE"}
-{"type": "YARN_LITERAL", "value": "\"1. Compute age\""}
-{"type": "KEYWORD", "value": "VISIBLE"}
-{"type": "YARN_LITERAL", "value": "\"2. Compute tip\""}
-{"type": "KEYWORD", "value": "VISIBLE"}
-{"type": "YARN_LITERAL", "value": "\"3. Compute square area\""}
-{"type": "KEYWORD", "value": "VISIBLE"}
-{"type": "YARN_LITERAL", "value": "\"0. Exit\""}
-{"type": "KEYWORD", "value": "VISIBLE"}
-{"type": "YARN_LITERAL", "value": "\"Choice: \""}
-{"type": "KEYWORD", "value": "GIMMEH"}
-{"type": "VARIABLE_IDENTIFIER", "value": "choice"}
-{"type": "KEYWORD", "value": "BOTH SAEM"}
-{"type": "VARIABLE_IDENTIFIER", "value": "choice"}
+{"type": "KEYWORD", "value": "HOW IZ I"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "YR"}
+{"type": "VARIABLE_IDENTIFIER", "value": "a"}
 {"type": "KEYWORD", "value": "AN"}
-{"type": "NUMBR_LITERAL", "value": "1"}
-{"type": "KEYWORD", "value": "O RLY?"}
-{"type": "KEYWORD", "value": "YA RLY"}
+{"type": "KEYWORD", "value": "YR"}
+{"type": "VARIABLE_IDENTIFIER", "value": "b"}
+{"type": "COMMENT", "value": "BTW Function to compute sum"}
 {"type": "KEYWORD", "value": "VISIBLE"}
-{"type": "YARN_LITERAL", "value": "\"Enter birth year: \""}
-{"type": "KEYWORD", "value": "GIMMEH"}
-{"type": "VARIABLE_IDENTIFIER", "value": "input"}
-{"type": "KEYWORD", "value": "VISIBLE"}
-{"type": "KEYWORD", "value": "DIFF OF"}
-{"type": "NUMBR_LITERAL", "value": "2022"}
+{"type": "KEYWORD", "value": "SUM OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "a"}
 {"type": "KEYWORD", "value": "AN"}
-{"type": "VARIABLE_IDENTIFIER", "value": "input"}
-{"type": "MULTILINE_COMMENT_START", "value": "OBTW"}
-{"type": "MULTILINE_COMMENT_END", "value": "TLDR"}
-{"type": "KEYWORD", "value": "NO WAI"}
-{"type": "KEYWORD", "value": "VISIBLE"}
-{"type": "YARN_LITERAL", "value": "\"Invalid Input!\""}
-{"type": "KEYWORD", "value": "OIC"}
-{"type": "KEYWORD", "value": "DIFFRINT"}
-{"type": "KEYWORD", "value": "BIGGR OF"}
-{"type": "NUMBR_LITERAL", "value": "3"}
-{"type": "KEYWORD", "value": "AN"}
-{"type": "VARIABLE_IDENTIFIER", "value": "choice"}
-{"type": "KEYWORD", "value": "AN"}
-{"type": "NUMBR_LITERAL", "value": "3"}
-{"type": "KEYWORD", "value": "O RLY?"}
-{"type": "KEYWORD", "value": "YA RLY"}
-{"type": "KEYWORD", "value": "VISIBLE"}
-{"type": "YARN_LITERAL", "value": "\"Invalid input is > 3.\""}
-{"type": "KEYWORD", "value": "OIC"}
+{"type": "VARIABLE_IDENTIFIER", "value": "b"}
+{"type": "KEYWORD", "value": "IF U SAY SO"}
 {"type": "KEYWORD", "value": "KTHXBYE"}
