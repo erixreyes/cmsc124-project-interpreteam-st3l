@@ -14,8 +14,8 @@
 {"type": "NUMBR_LITERAL", "value": "0"}
 {"type": "KEYWORD", "value": "IM IN YR"}
 {"type": "VARIABLE_IDENTIFIER", "value": "asc"}
-{"type": "VARIABLE_IDENTIFIER", "value": "UPPIN"}
-{"type": "VARIABLE_IDENTIFIER", "value": "YR"}
+{"type": "KEYWORD", "value": "UPPIN"}
+{"type": "KEYWORD", "value": "YR"}
 {"type": "VARIABLE_IDENTIFIER", "value": "num2"}
 {"type": "KEYWORD", "value": "WILE"}
 {"type": "KEYWORD", "value": "BOTH SAEM"}
@@ -25,16 +25,14 @@
 {"type": "VARIABLE_IDENTIFIER", "value": "num2"}
 {"type": "KEYWORD", "value": "AN"}
 {"type": "VARIABLE_IDENTIFIER", "value": "num1"}
-{"type": "KEYWORD", "value": "VISIBLE"}
-{"type": "VARIABLE_IDENTIFIER", "value": "num2"}
 {"type": "KEYWORD", "value": "IM OUTTA YR"}
 {"type": "VARIABLE_IDENTIFIER", "value": "asc"}
 {"type": "KEYWORD", "value": "VISIBLE"}
 {"type": "YARN_LITERAL", "value": "\"***\""}
 {"type": "KEYWORD", "value": "IM IN YR"}
 {"type": "VARIABLE_IDENTIFIER", "value": "desc"}
-{"type": "VARIABLE_IDENTIFIER", "value": "NERFIN"}
-{"type": "VARIABLE_IDENTIFIER", "value": "YR"}
+{"type": "KEYWORD", "value": "NERFIN"}
+{"type": "KEYWORD", "value": "YR"}
 {"type": "VARIABLE_IDENTIFIER", "value": "num2"}
 {"type": "KEYWORD", "value": "TIL"}
 {"type": "KEYWORD", "value": "BOTH SAEM"}

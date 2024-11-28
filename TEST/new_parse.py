@@ -356,41 +356,44 @@ class Parser:
             self.variables[varident["value"]] = None
 
     def parse_loop(self):
-        """Parse a loop: IM IN YR <loopname> (TIL/WILE <condition>) ... IM OUTTA YR <loopname>."""
+        """Parse a loop: IM IN YR <label> <operation> YR <variable> [TIL/WILE <condition>] ... IM OUTTA YR <label>."""
         if not self.match("KEYWORD", "IM IN YR"):
             self.error("Expected 'IM IN YR' to start a loop")
 
-        # Parse the loop name
+        # Parse the loop name (label)
         loopname_token = self.match("VARIABLE_IDENTIFIER")
         if not loopname_token:
-            self.error("Expected a loop name after 'IM IN YR'")
+            self.error("Expected a loop name (variable identifier) after 'IM IN YR'")
         loopname = loopname_token["value"]
 
-        # Parse the loop condition type (TIL/WILE)
+        # Parse the operation (UPPIN or NERFIN)
+        operation = self.match("KEYWORD")  # Look for the operation (UPPIN or NERFIN)
+        if not operation or operation["value"] not in ["UPPIN", "NERFIN"]:
+            self.error("Expected 'UPPIN' or 'NERFIN' after loop name")
+
+        # Expect 'YR' after the operation (between the operation and the variable)
+        if not self.match("KEYWORD", "YR"):
+            self.error("Expected 'YR' after operation to specify the variable")
+
+        # Parse the loop variable (variable to modify)
+        var_token = self.match("VARIABLE_IDENTIFIER")
+        if not var_token:
+            self.error("Expected a variable after 'YR'")
+
+        # Optional: Parse the loop condition type (TIL/WILE)
+        condition_type = None
         if self.match("KEYWORD", "TIL"):
             condition_type = "TIL"
         elif self.match("KEYWORD", "WILE"):
             condition_type = "WILE"
-        else:
-            self.error("Expected 'TIL' or 'WILE' after loop name")
 
-        # Parse the loop condition
-        if not self.parse_expression():
-            self.error(f"Expected an expression after '{condition_type}' in loop")
-
-        # Execute the loop
-        while True:
-            # Evaluate the condition based on the loop type
-            condition_result = self.it == "WIN"
-            if (condition_type == "TIL" and condition_result) or (condition_type == "WILE" and not condition_result):
-                break  # Exit the loop when the condition is met (TIL) or fails (WILE)
-
-            # Parse the loop body
-            self.parse_statements()
-
-            # Re-evaluate the condition after parsing the body
+        # Parse the loop condition expression (if TIL or WILE)
+        if condition_type:
             if not self.parse_expression():
-                self.error(f"Expected an expression after '{condition_type}' in loop")
+                self.error(f"Expected an expression after '{condition_type}' in loop condition")
+
+        # Loop execution logic: Just loop through the body for now
+        self.parse_statements()  # Parse the body of the loop
 
         # Ensure the loop ends with IM OUTTA YR <loopname>
         if not self.match("KEYWORD", "IM OUTTA YR"):
