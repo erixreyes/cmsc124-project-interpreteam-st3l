@@ -1,22 +1,70 @@
 {"type": "KEYWORD", "value": "HAI"}
 {"type": "KEYWORD", "value": "WAZZUP"}
 {"type": "KEYWORD", "value": "I HAS A"}
+{"type": "VARIABLE_IDENTIFIER", "value": "name"}
+{"type": "KEYWORD", "value": "I HAS A"}
 {"type": "VARIABLE_IDENTIFIER", "value": "num1"}
 {"type": "KEYWORD", "value": "I HAS A"}
 {"type": "VARIABLE_IDENTIFIER", "value": "num2"}
 {"type": "KEYWORD", "value": "BUHBYE"}
 {"type": "KEYWORD", "value": "HOW IZ I"}
+{"type": "VARIABLE_IDENTIFIER", "value": "addNum"}
+{"type": "KEYWORD", "value": "YR"}
 {"type": "VARIABLE_IDENTIFIER", "value": "x"}
-{"type": "KEYWORD", "value": "YR"}
-{"type": "VARIABLE_IDENTIFIER", "value": "a"}
 {"type": "KEYWORD", "value": "AN"}
 {"type": "KEYWORD", "value": "YR"}
-{"type": "VARIABLE_IDENTIFIER", "value": "b"}
-{"type": "COMMENT", "value": "BTW Function to compute sum"}
-{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
+{"type": "KEYWORD", "value": "FOUND YR"}
 {"type": "KEYWORD", "value": "SUM OF"}
-{"type": "VARIABLE_IDENTIFIER", "value": "a"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
 {"type": "KEYWORD", "value": "AN"}
-{"type": "VARIABLE_IDENTIFIER", "value": "b"}
+{"type": "VARIABLE_IDENTIFIER", "value": "y"}
 {"type": "KEYWORD", "value": "IF U SAY SO"}
+{"type": "KEYWORD", "value": "HOW IZ I"}
+{"type": "VARIABLE_IDENTIFIER", "value": "printName"}
+{"type": "KEYWORD", "value": "YR"}
+{"type": "VARIABLE_IDENTIFIER", "value": "person"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "YARN_LITERAL", "value": "\"Hello, \""}
+{"type": "CONCAT_OPERATOR", "value": "+"}
+{"type": "VARIABLE_IDENTIFIER", "value": "person"}
+{"type": "KEYWORD", "value": "GTFO"}
+{"type": "KEYWORD", "value": "IF U SAY SO"}
+{"type": "KEYWORD", "value": "HOW IZ I"}
+{"type": "VARIABLE_IDENTIFIER", "value": "printNum"}
+{"type": "KEYWORD", "value": "YR"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "FOUND YR"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "IF U SAY SO"}
+{"type": "KEYWORD", "value": "GIMMEH"}
+{"type": "VARIABLE_IDENTIFIER", "value": "num1"}
+{"type": "KEYWORD", "value": "GIMMEH"}
+{"type": "VARIABLE_IDENTIFIER", "value": "num2"}
+{"type": "KEYWORD", "value": "I IZ"}
+{"type": "VARIABLE_IDENTIFIER", "value": "addNum"}
+{"type": "KEYWORD", "value": "YR"}
+{"type": "VARIABLE_IDENTIFIER", "value": "num1"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "KEYWORD", "value": "YR"}
+{"type": "VARIABLE_IDENTIFIER", "value": "num2"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "KEYWORD", "value": "IT"}
+{"type": "KEYWORD", "value": "GIMMEH"}
+{"type": "VARIABLE_IDENTIFIER", "value": "name"}
+{"type": "KEYWORD", "value": "I IZ"}
+{"type": "VARIABLE_IDENTIFIER", "value": "printName"}
+{"type": "KEYWORD", "value": "YR"}
+{"type": "VARIABLE_IDENTIFIER", "value": "name"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "KEYWORD", "value": "IT"}
+{"type": "KEYWORD", "value": "I IZ"}
+{"type": "VARIABLE_IDENTIFIER", "value": "printNum"}
+{"type": "KEYWORD", "value": "YR"}
+{"type": "KEYWORD", "value": "SUM OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "x"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "NUMBR_LITERAL", "value": "2"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "KEYWORD", "value": "IT"}
 {"type": "KEYWORD", "value": "KTHXBYE"}

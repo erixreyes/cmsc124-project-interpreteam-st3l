@@ -167,7 +167,15 @@ class Parser:
             operand = self.it
             self.it = not operand
             return True
-
+        
+        if self.match("KEYWORD", "IT"):
+            it_value = self.it
+            if not it_value:
+                it_value = 0
+                self.it = it_value
+            return True
+            
+        
         # Handle ALL OF and ANY OF (multi-arity logical operators)
         if self.match("KEYWORD", "ALL OF") or self.match("KEYWORD", "ANY OF"):
             operator = self.tokens[self.current - 1]["value"]
@@ -304,11 +312,14 @@ class Parser:
         """Parse a list of values or expressions: <expr> (+ <expr>)*."""
         result = []  # To store concatenated parts
 
+        
         # First, parse the initial expression
-        if not self.parse_expression():
+        if not self.parse_expression() :
+            print(self.it)
             self.error("Expected an expression or value after 'VISIBLE'")
         result.append(str(self.it))  # Add the result of the expression
 
+        
         # Handle concatenation using '+' or 'AN'
         while self.match("CONCAT_OPERATOR", "+") or self.match("KEYWORD", "AN"):
             if not self.parse_expression():  # Parse the next expression
@@ -343,6 +354,9 @@ class Parser:
 
         # Parse the list of expressions/literals
         self.parse_print_list()
+        
+        # Print the result (IT or other expression value)
+        print(self.it)
 
         # Handle optional inline comment
         self.parse_inline_comment()
@@ -644,12 +658,18 @@ class Parser:
         while not self.match("KEYWORD", "IF U SAY SO"):
             if not self.peek():
                 self.error("Unterminated function body; expected 'IF U SAY SO'")
-            
-            # Parse statements specifically for the function body
+
             token = self.peek()
-            if token["value"] in ["IF U SAY SO"]:
-                break  # Ensure we stop at the function terminator
-            body_statements.append(self.parse_statements())  # Collect statements in the function body
+            if token["value"] == "GTFO":
+                self.consume()  # Consume GTFO
+                body_statements.append({"type": "EXIT"})  # Add exit statement
+            elif token["value"] == "FOUND YR":
+                self.consume()  # Consume FOUND YR
+                if not self.parse_expression():
+                    self.error("Expected an expression after 'FOUND YR'")
+                body_statements.append({"type": "RETURN", "value": self.it})  # Add return statement
+            else:
+                body_statements.append(self.parse_statements())  # Parse regular statements
 
         # Restore the global variable state
         self.variables = previous_variables
@@ -659,18 +679,34 @@ class Parser:
             "parameters": parameters,
             "body": body_statements
         }
+        print(self.functions)
         print(f"Function '{func_name}' defined with parameters {parameters}")
 
-    def execute_function(self, func_name, body_statements, local_variables):
+    def execute_function(self, func_name, func_body, local_variables):
         """Execute a function body with local variables."""
+        if func_name not in self.functions:
+                self.error(f"Function '{func_name}' not defined")
         # Store the local variables in the parser's scope
         self.variables.update(local_variables)
+        
+        # Save the current state of IT to handle return values properly
+        previous_it = self.it
 
-        # Parse the function body
-        for statement in body_statements:
-            self.parse_statements()  # Execute each statement in the function body
+        # Execute the function body
+        for statement in func_body:
+            if statement is None:
+                continue
+            # For each statement in the function body, execute it
+            if statement["type"] == "RETURN":
+                self.it = statement["value"]  # Set the return value to IT
+                break  # Exit the function
+            elif statement["type"] == "EXIT":
+                self.it = "NOOB"  # No return value in case of GTFO
+                break  # Exit the function
+            else:
+                self.parse_statements()  # Execute other statements inside the function
 
-        # Handle return statement (FOUND YR <expression>)
+            # Handle return statement (FOUND YR <expression>)
         if self.match("KEYWORD", "FOUND YR"):
             self.parse_expression()  # Parse the return expression
             self.it = self.it  # Store the result in IT
@@ -678,7 +714,72 @@ class Parser:
         # Handle GTFO (no return value)
         elif self.match("KEYWORD", "GTFO"):
             self.it = "NOOB"  # No return value in case of GTFO
-            
+        # If no return is found, set the IT to NOOB
+        if self.it is None:
+            self.it = "NOOB"
+        
+        # Restore IT after function execution
+        self.it = previous_it
+
+    def parse_function_call(self):
+        """Parse and execute a function call: I IZ <function_name> [YR <arg1> AN YR <arg2> ...] MKAY."""
+        if not self.match("KEYWORD", "I IZ"):
+            self.error("Expected 'I IZ' to start a function call")
+
+        # Parse the function name
+        func_name = self.match("VARIABLE_IDENTIFIER")
+        if not func_name:
+            self.error("Expected a function name after 'I IZ'")
+
+        func_name = func_name["value"]
+
+        # Parse the arguments
+        arguments = []
+        if self.match("KEYWORD", "YR"):
+            while True:
+                if not self.parse_expression():  # Parse the argument as an expression
+                    self.error("Expected an argument expression after 'YR'")
+                arguments.append(self.it)  # Store the evaluated argument
+
+                # Match "AN YR" for additional arguments
+                if self.match("KEYWORD", "AN"):  # Match "AN"
+                    if not self.match("KEYWORD", "YR"):
+                        self.error("Expected 'YR' after 'AN' for additional arguments")
+                else:
+                    break  # Stop if no more arguments
+
+        # Optional function call ends with MKAY
+        if not self.match("KEYWORD", "MKAY"):
+            # Check if the next token indicates the start of a new statement or block terminator
+            next_token = self.peek()
+            if next_token and next_token["value"] not in ["VISIBLE", "I HAS A", "IM OUTTA YR", "KTHXBYE"]:
+                self.error("Unexpected token after function call. Expected 'MKAY' or a valid statement.")
+
+        # If prefer natin na walang gawin yung MKAY, tapos okay lang na i-call yung function call anywhere, uncomment yung nasa baba
+        # self.match("KEYWORD", "MKAY")  # If MKAY is present, consume it
+
+
+        # Look up the function in the function table
+        if func_name not in self.functions:
+            self.error(f"Function '{func_name}' not defined")
+
+        # Get the function definition
+        func_def = self.functions[func_name]
+        func_params = func_def["parameters"]
+        func_body = func_def["body"]
+
+        # Check argument count
+        if len(arguments) != len(func_params):
+            self.error(f"Function '{func_name}' expects {len(func_params)} arguments but got {len(arguments)}")
+
+        # Create a local variable scope for the function
+        local_variables = {param: value for param, value in zip(func_params, arguments)}
+
+        # Execute the function
+        self.execute_function(func_name, func_body, local_variables)
+        
+        return self.it
+                
     def parse_literal(self):
         """Parse a literal: numbr, numbar, yarn, troof."""
         # Check for TROOF literal (WIN or FAIL)
@@ -704,8 +805,11 @@ class Parser:
             if token["type"] == "MULTILINE_COMMENT_START" and token["value"] == "OBTW":
                 self.parse_multiline_comment()  # Handle the multiline comment
                 continue  # Skip to the next token after consuming the comment
-
-            if token["value"] in ["OIC", "NO WAI", "MEBBE", "IM OUTTA YR", "KTHXBYE", "IF U SAY SO"]:
+            # Handle function calls
+            if token["value"] == "I IZ":
+                self.parse_function_call()
+                continue  # Continue after parsing the function call
+            if token["value"] in ["OIC", "NO WAI", "MEBBE", "IM OUTTA YR", "KTHXBYE", "IF U SAY SO", "GTFO"]:
                 return  # Exit on block terminators
             elif self.match("KEYWORD", "VISIBLE"):
                 self.current -= 1  # Allow parse_visible to handle it
