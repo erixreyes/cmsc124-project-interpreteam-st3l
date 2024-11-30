@@ -22,11 +22,11 @@ class SymbolTable:
     def __init__(self):
         self.table = {}  # Stores variables and functions
 
-    def add_variable(self, name, var_type=None, value=None):
+    def add_variable(self, name, value=None):
         """Add or update a variable in the symbol table."""
         if name in self.table:
             raise ValueError(f"Variable '{name}' already declared.")
-        self.table[name] = {"type": var_type, "value": value}
+        self.table[name] = {"value": value}
 
     def update_variable(self, name, value):
         """Update a variable's value."""
@@ -37,17 +37,10 @@ class SymbolTable:
         var_type = self.infer_type(value)
         self.table[name].update({"value": value, "type": var_type})
 
-    def infer_type(self, value):
-        """Infer the type of a value."""
-        if isinstance(value, bool):  # TROOF
-            return "TROOF"
-        elif isinstance(value, int):  # NUMBR
-            return "NUMBR"
-        elif isinstance(value, float):  # NUMBAR
-            return "NUMBAR"
-        elif isinstance(value, str):  # YARN_LITERAL
-            return "YARN_LITERAL"
-        return "UNKNOWN"  # Default if type cannot be inferred
+    def get_variable(self, name):
+        """Retrieve a variable's information from the symbol table."""
+        return self.table.get(name)
+
 
     def __str__(self):
         # Return a formatted string representation of the variables
@@ -448,14 +441,14 @@ class Parser:
                 # Store the variable with its initialized value and type
                 self.variables[var_name] = {"type": literal["type"], "value": literal["value"]}
                 var_type = literal["type"]
-                self.symbol_table.add_variable(var_name, var_type, literal["value"])
+                self.symbol_table.add_variable(var_name, literal["value"])
             else:
                 var_value = self.match("VARIABLE_IDENTIFIER")
                 
                 if var_value:
                     if var_value["value"] in self.variables:
                         self.variables[var_name] = {"type": self.variables[var_value["value"]]["type"], "value": self.variables[var_value["value"]]["value"]}
-                        self.symbol_table.add_variable(var_name, self.variables[var_value["value"]]["type"], self.variables[var_value["value"]]["value"])
+                        self.symbol_table.add_variable(var_name, self.variables[var_value["value"]]["value"])
                     else:
                         self.error(f"Variable '{var_value['value']}' not declared.")
                 else:
@@ -464,7 +457,7 @@ class Parser:
                     self.variables[var_name] = {"type": var_type, "value": self.it}
         else:
             self.variables[var_name] = {"type": var_type, "value": None}
-            self.symbol_table.add_variable(var_name, var_type, None)
+            self.symbol_table.add_variable(var_name,  None)
 
     def parse_loop(self):
         """Parse a loop: IM IN YR <label> <operation> YR <variable> [TIL/WILE <condition>] ... IM OUTTA YR <label>."""
