@@ -17,6 +17,42 @@ def read_tokens(file_name="output.txt"):
     except json.JSONDecodeError as e:
         print(f"Error decoding JSON: {e}")
         return []
+    
+class SymbolTable:
+    def __init__(self):
+        self.table = {}  # Stores variables and functions
+
+    def add_variable(self, name, var_type=None, value=None):
+        """Add or update a variable in the symbol table."""
+        if name in self.table:
+            raise ValueError(f"Variable '{name}' already declared.")
+        self.table[name] = {"type": var_type, "value": value}
+
+    def update_variable(self, name, value):
+        """Update a variable's value."""
+        if name not in self.table:
+            raise ValueError(f"Variable '{name}' not declared.")
+        
+        # Dynamically update type if value is provided
+        var_type = self.infer_type(value)
+        self.table[name].update({"value": value, "type": var_type})
+
+    def infer_type(self, value):
+        """Infer the type of a value."""
+        if isinstance(value, bool):  # TROOF
+            return "TROOF"
+        elif isinstance(value, int):  # NUMBR
+            return "NUMBR"
+        elif isinstance(value, float):  # NUMBAR
+            return "NUMBAR"
+        elif isinstance(value, str):  # YARN_LITERAL
+            return "YARN_LITERAL"
+        return "UNKNOWN"  # Default if type cannot be inferred
+
+    def __str__(self):
+        # Return a formatted string representation of the variables
+        return "\n".join([f"{name}: {value}" for name, value in self.table.items()])
+
 class Parser:
     def __init__(self, tokens):
         self.tokens = tokens
@@ -25,7 +61,14 @@ class Parser:
         self.it = None  # Represent the IT variable
         self.inside_wazzup = False 
         self.functions = {}  # Initialize the functions dictionary to store defined functions
+        self.symbol_table = SymbolTable()  # Initialize the symbol table
 
+    def add_symbol(self, name, symbol_type, properties):
+        """Add or update a symbol in the symbol table."""
+        self.symbol_table[name] = {
+            "type": symbol_type,
+            "properties": properties
+    }
     def peek(self):
         """Peek at the current token."""
         while self.current < len(self.tokens):
@@ -62,11 +105,20 @@ class Parser:
 
     def parse_literal(self):
         """Parse a literal: numbr, numbar, yarn, troof."""
+        # Check for TROOF literal (WIN or FAIL)
+        troof = self.match("TROOF_LITERAL")
+        if troof:
+            if troof["value"] == "WIN":
+                self.it = True  # WIN is considered True
+            elif troof["value"] == "FAIL":
+                self.it = False  # FAIL is considered False
+            return troof
+
+        # Proceed with the rest of the literals (numbr, numbar, yarn, etc.)
         return (
             self.match("NUMBR_LITERAL") or
             self.match("NUMBAR_LITERAL") or
-            self.match("YARN_LITERAL") or
-            self.match("TROOF_LITERAL")
+            self.match("YARN_LITERAL")
         )
 
     def parse_expression(self):
@@ -169,10 +221,6 @@ class Parser:
             return True
         
         if self.match("KEYWORD", "IT"):
-            it_value = self.it
-            if not it_value:
-                it_value = 0
-                self.it = it_value
             return True
             
         
@@ -315,7 +363,6 @@ class Parser:
         
         # First, parse the initial expression
         if not self.parse_expression() :
-            print(self.it)
             self.error("Expected an expression or value after 'VISIBLE'")
         result.append(str(self.it))  # Add the result of the expression
 
@@ -355,8 +402,8 @@ class Parser:
         # Parse the list of expressions/literals
         self.parse_print_list()
         
-        # Print the result (IT or other expression value)
-        print(self.it)
+        # # Print the result (IT or other expression value)
+        # print(self.it)
 
         # Handle optional inline comment
         self.parse_inline_comment()
@@ -388,26 +435,36 @@ class Parser:
         if not varident:
             self.error("Expected a variable identifier after 'I HAS A'")
 
+        var_name = varident["value"]
+
+        # Determine the type of the variable (if possible)
+        var_type = self.parse_literal()
+
         # Check if the variable is initialized with ITZ
         if self.match("KEYWORD", "ITZ"):
             # Parse the value for initialization
             literal = self.parse_literal()
             if literal:
-                # Store the variable with its initialized value
-                self.variables[varident["value"]] = literal["value"]
+                # Store the variable with its initialized value and type
+                self.variables[var_name] = {"type": literal["type"], "value": literal["value"]}
+                var_type = literal["type"]
+                self.symbol_table.add_variable(var_name, var_type, literal["value"])
             else:
                 var_value = self.match("VARIABLE_IDENTIFIER")
+                
                 if var_value:
                     if var_value["value"] in self.variables:
-                        self.variables[varident["value"]] = self.variables[var_value["value"]]
+                        self.variables[var_name] = {"type": self.variables[var_value["value"]]["type"], "value": self.variables[var_value["value"]]["value"]}
+                        self.symbol_table.add_variable(var_name, self.variables[var_value["value"]]["type"], self.variables[var_value["value"]]["value"])
                     else:
                         self.error(f"Variable '{var_value['value']}' not declared.")
                 else:
                     if not self.parse_expression():
                         self.error("Expected a literal, variable, or expression after 'ITZ'")
-                    self.variables[varident["value"]] = self.it
+                    self.variables[var_name] = {"type": var_type, "value": self.it}
         else:
-            self.variables[varident["value"]] = None
+            self.variables[var_name] = {"type": var_type, "value": None}
+            self.symbol_table.add_variable(var_name, var_type, None)
 
     def parse_loop(self):
         """Parse a loop: IM IN YR <label> <operation> YR <variable> [TIL/WILE <condition>] ... IM OUTTA YR <label>."""
@@ -779,24 +836,6 @@ class Parser:
         self.execute_function(func_name, func_body, local_variables)
         
         return self.it
-                
-    def parse_literal(self):
-        """Parse a literal: numbr, numbar, yarn, troof."""
-        # Check for TROOF literal (WIN or FAIL)
-        troof = self.match("TROOF_LITERAL")
-        if troof:
-            if troof["value"] == "WIN":
-                self.it = True  # WIN is considered True
-            elif troof["value"] == "FAIL":
-                self.it = False  # FAIL is considered False
-            return troof
-
-        # Proceed with the rest of the literals (numbr, numbar, yarn, etc.)
-        return (
-            self.match("NUMBR_LITERAL") or
-            self.match("NUMBAR_LITERAL") or
-            self.match("YARN_LITERAL")
-        )
     
     def parse_statements(self):
         """Parse a sequence of statements within a block."""
@@ -895,16 +934,22 @@ def main():
         parser = Parser(tokens)
         parser.parse_program_structure()
 
-        # Success message
+        # Success message and output
         with open("parsing_output.txt", "w") as output_file:
             output_file.write("Parsing successful: Program structure is valid.\n")
+            output_file.write("Symbol Table:\n")
+            output_file.write(str(parser.symbol_table) + "\n")  # Write the symbol table
+
         print("Parsing successful: Program structure is valid.")
-        print(f"Declared Variables: {parser.variables}")  # Output the variables
+        print("Declared Variables:", parser.variables)  # Output the variables
+        print("Symbol Table:", parser.symbol_table)  # Output the symbol table
 
     except SyntaxError as e:
         with open("parsing_output.txt", "w") as output_file:
             output_file.write(f"Parsing failed: {e}\n")
         print(f"Parsing failed: {e}")
 
+
 if __name__ == "__main__":
     main()
+    

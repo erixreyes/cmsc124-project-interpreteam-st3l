@@ -1,1 +1,5 @@
 Parsing successful: Program structure is valid.
+Symbol Table:
+foo: {'type': 'NUMBR_LITERAL', 'value': '42'}
+bar: {'type': 'NUMBR_LITERAL', 'value': '42'}
+baz: {'type': None, 'value': None}
