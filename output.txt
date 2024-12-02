@@ -1,26 +1,103 @@
-Token Type: KEYWORD, Value: HAI
-Token Type: NUMBAR_LITERAL, Value: 1.2
-Token Type: KEYWORD, Value: I HAS A
-Token Type: VARIABLE_IDENTIFIER, Value: VAR
-Token Type: KEYWORD, Value: I HAS A
-Token Type: VARIABLE_IDENTIFIER, Value: VAR
-Token Type: KEYWORD, Value: ITZ
-Token Type: KEYWORD, Value: SUM OF
-Token Type: KEYWORD, Value: DIFF OF
-Token Type: NUMBR_LITERAL, Value: 5
-Token Type: VARIABLE_IDENTIFIER, Value: AN
-Token Type: NUMBR_LITERAL, Value: 2
-Token Type: VARIABLE_IDENTIFIER, Value: AN
-Token Type: KEYWORD, Value: SUM OF
-Token Type: NUMBR_LITERAL, Value: 3
-Token Type: VARIABLE_IDENTIFIER, Value: AN
-Token Type: NUMBR_LITERAL, Value: 4
-Token Type: VARIABLE_IDENTIFIER, Value: VAR
-Token Type: KEYWORD, Value: R
-Token Type: NUMBR_LITERAL, Value: 5
-Token Type: KEYWORD, Value: VISIBLE
-Token Type: YARN_LITERAL, Value: "Hello World!"
-Token Type: COMMENT, Value: BTW This is a comment
-Token Type: MULTILINE_COMMENT_START, Value: OBTW
-Token Type: MULTILINE_COMMENT_END, Value: TLDR
-Token Type: KEYWORD, Value: KTHXBYE
+{"type": "COMMENT", "value": "BTW start of the program"}
+{"type": "KEYWORD", "value": "HAI"}
+{"type": "KEYWORD", "value": "WAZZUP"}
+{"type": "COMMENT", "value": "BTW variable dec"}
+{"type": "KEYWORD", "value": "I HAS A"}
+{"type": "VARIABLE_IDENTIFIER", "value": "monde"}
+{"type": "KEYWORD", "value": "I HAS A"}
+{"type": "VARIABLE_IDENTIFIER", "value": "num"}
+{"type": "KEYWORD", "value": "ITZ"}
+{"type": "NUMBR_LITERAL", "value": "17"}
+{"type": "KEYWORD", "value": "I HAS A"}
+{"type": "VARIABLE_IDENTIFIER", "value": "name"}
+{"type": "KEYWORD", "value": "ITZ"}
+{"type": "YARN_LITERAL", "value": "\"seventeen\""}
+{"type": "KEYWORD", "value": "I HAS A"}
+{"type": "VARIABLE_IDENTIFIER", "value": "fnum"}
+{"type": "KEYWORD", "value": "ITZ"}
+{"type": "NUMBAR_LITERAL", "value": "17.0"}
+{"type": "KEYWORD", "value": "I HAS A"}
+{"type": "VARIABLE_IDENTIFIER", "value": "flag"}
+{"type": "KEYWORD", "value": "ITZ"}
+{"type": "TROOF_LITERAL", "value": "WIN"}
+{"type": "KEYWORD", "value": "I HAS A"}
+{"type": "VARIABLE_IDENTIFIER", "value": "sum"}
+{"type": "KEYWORD", "value": "ITZ"}
+{"type": "KEYWORD", "value": "SUM OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "num"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "NUMBR_LITERAL", "value": "13"}
+{"type": "KEYWORD", "value": "I HAS A"}
+{"type": "VARIABLE_IDENTIFIER", "value": "diff"}
+{"type": "KEYWORD", "value": "ITZ"}
+{"type": "KEYWORD", "value": "DIFF OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "sum"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "NUMBR_LITERAL", "value": "17"}
+{"type": "KEYWORD", "value": "I HAS A"}
+{"type": "VARIABLE_IDENTIFIER", "value": "prod"}
+{"type": "KEYWORD", "value": "ITZ"}
+{"type": "KEYWORD", "value": "PRODUKT OF"}
+{"type": "NUMBR_LITERAL", "value": "3"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "NUMBR_LITERAL", "value": "4"}
+{"type": "KEYWORD", "value": "I HAS A"}
+{"type": "VARIABLE_IDENTIFIER", "value": "quo"}
+{"type": "KEYWORD", "value": "ITZ"}
+{"type": "KEYWORD", "value": "QUOSHUNT OF"}
+{"type": "NUMBR_LITERAL", "value": "4"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "NUMBR_LITERAL", "value": "5"}
+{"type": "KEYWORD", "value": "BUHBYE"}
+{"type": "COMMENT", "value": "BTW print literals and variables"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "YARN_LITERAL", "value": "\"declarations\""}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "VARIABLE_IDENTIFIER", "value": "monde"}
+{"type": "COMMENT", "value": "BTW should be NOOB"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "VARIABLE_IDENTIFIER", "value": "num"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "VARIABLE_IDENTIFIER", "value": "name"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "VARIABLE_IDENTIFIER", "value": "fnum"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "VARIABLE_IDENTIFIER", "value": "flag"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "VARIABLE_IDENTIFIER", "value": "sum"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "VARIABLE_IDENTIFIER", "value": "diff"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "VARIABLE_IDENTIFIER", "value": "prod"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "VARIABLE_IDENTIFIER", "value": "quo"}
+{"type": "COMMENT", "value": "BTW print expressions"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "KEYWORD", "value": "SUM OF"}
+{"type": "KEYWORD", "value": "PRODUKT OF"}
+{"type": "NUMBR_LITERAL", "value": "3"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "NUMBR_LITERAL", "value": "5"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "KEYWORD", "value": "BIGGR OF"}
+{"type": "KEYWORD", "value": "DIFF OF"}
+{"type": "NUMBR_LITERAL", "value": "17"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "NUMBR_LITERAL", "value": "2"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "NUMBR_LITERAL", "value": "5"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "KEYWORD", "value": "BIGGR OF"}
+{"type": "KEYWORD", "value": "PRODUKT OF"}
+{"type": "NUMBR_LITERAL", "value": "11"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "NUMBR_LITERAL", "value": "2"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "KEYWORD", "value": "QUOSHUNT OF"}
+{"type": "KEYWORD", "value": "SUM OF"}
+{"type": "NUMBR_LITERAL", "value": "3"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "NUMBR_LITERAL", "value": "5"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "NUMBR_LITERAL", "value": "2"}
+{"type": "KEYWORD", "value": "KTHXBYE"}
