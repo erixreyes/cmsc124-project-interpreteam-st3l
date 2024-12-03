@@ -123,7 +123,7 @@ class LexicalAnalyzer:
         return tokens, False
 
 def lex(source_code):
-    lexer = LOLLexer(source_code)
+    lexer = LexicalAnalyzer(source_code)
     tokens = lexer.tokenize()
     compiled_lex = []
 
