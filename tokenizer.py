@@ -49,76 +49,117 @@ REGEX_PATTERNS = {
     TokenType.CONCAT_OPERATOR: r"^\+$",
 }
 
-def match_regex(regex_pattern, text):
-    """Check if a text matches a regex pattern."""
+def match_regex(regex_pattern, text):     # Check if a text matches a regex pattern.
     return re.match(regex_pattern, text) is not None
 
-def determine_token_type(word):
-    """Determine the type of a token."""
+def determine_token_type(word):           # Determine the type of a token.
     for token_type, regex_pattern in REGEX_PATTERNS.items():
         if match_regex(regex_pattern, word):
             return token_type
     return TokenType.UNKNOWN
 
-def tokenize_line(line, in_multiline_comment):
-    tokens = []
-    line = line.strip()
+class LexicalAnalyzer:
+    def __init__(self, source_code):
+        self.source_code = source_code
+        self.tokens = []
+        self.current_position = 0
+        self.in_multiline_comment = False
 
-    # Handle multi-line comment blocks
-    if in_multiline_comment:
-        if match_regex(REGEX_PATTERNS[TokenType.MULTILINE_COMMENT_END], line):
-            tokens.append({"type": TokenType.MULTILINE_COMMENT_END, "value": "TLDR"})
-            return tokens, False  # End of multi-line comment block
-        return tokens, True  # Skip processing lines within the comment block
+    def tokenize(self):
+        while self.current_position < len(self.source_code):
+            line = self.source_code[self.current_position].strip()
+            tokens, self.in_multiline_comment = self.tokenize_line(line, self.in_multiline_comment)
+            self.tokens.extend(tokens)
+            self.current_position += 1
+        return self.tokens
 
-    # Check if the line starts a multi-line comment
-    if match_regex(REGEX_PATTERNS[TokenType.MULTILINE_COMMENT_START], line):
-        tokens.append({"type": TokenType.MULTILINE_COMMENT_START, "value": "OBTW"})
-        return tokens, True  # Enter multi-line comment mode
+    def tokenize_line(self, line, in_multiline_comment):
+        tokens = []
 
-    # Handle inline comments (BTW)
-    if "BTW" in line:
-        # Split the line at BTW
-        before_btw, btw_comment = line.split("BTW", 1)
-        before_btw = before_btw.strip()  # Any tokens before BTW
-        btw_comment = btw_comment.strip()  # The comment after BTW
+        # Handle multi-line comment blocks
+        if in_multiline_comment:
+            if match_regex(REGEX_PATTERNS[TokenType.MULTILINE_COMMENT_END], line):
+                tokens.append({"type": TokenType.MULTILINE_COMMENT_END, "value": "TLDR"})
+                return tokens, False  # End of multi-line comment block
+            return tokens, True  # Skip processing lines within the comment block
 
-        # Tokenize anything before BTW
+        # Check if the line starts a multi-line comment
+        if match_regex(REGEX_PATTERNS[TokenType.MULTILINE_COMMENT_START], line):
+            tokens.append({"type": TokenType.MULTILINE_COMMENT_START, "value": "OBTW"})
+            return tokens, True  # Enter multi-line comment mode
+
+        # Handle inline comments (BTW)
+        if "BTW" in line:
+            # Split the line at BTW
+            before_btw, btw_comment = line.split("BTW", 1)
+            before_btw = before_btw.strip()  # Any tokens before BTW
+            btw_comment = btw_comment.strip()  # The comment after BTW
+
+            # Tokenize anything before BTW
+            combined_pattern = r'"[^"]*"|' + REGEX_PATTERNS[TokenType.KEYWORD] + r'|[^\s]+'
+            for match in re.finditer(combined_pattern, before_btw):
+                token = match.group(0)
+                token_type = determine_token_type(token)
+                tokens.append({"type": token_type, "value": token})
+
+            # Add the entire BTW comment as a single token
+            tokens.append({"type": TokenType.COMMENT, "value": "BTW " + btw_comment})
+            return tokens, False  # Stop processing this line further
+        
+        # Match multi-word keywords first CRUCIAL FOR O RLY? WTF?
+        for multiword in MULTIWORD_KEYWORDS:
+            if line.startswith(multiword):
+                tokens.append({"type": TokenType.KEYWORD, "value": multiword})
+                line = line[len(multiword):].strip()  # Remove matched keyword from the line
+                break
+            
+        # Tokenize the rest of the line as usual
         combined_pattern = r'"[^"]*"|' + REGEX_PATTERNS[TokenType.KEYWORD] + r'|[^\s]+'
-        for match in re.finditer(combined_pattern, before_btw):
+        for match in re.finditer(combined_pattern, line):
             token = match.group(0)
             token_type = determine_token_type(token)
             tokens.append({"type": token_type, "value": token})
 
-        # Add the entire BTW comment as a single token
-        tokens.append({"type": TokenType.COMMENT, "value": "BTW " + btw_comment})
-        return tokens, False  # Stop processing this line further
-    
-    # Match multi-word keywords first CRUCIAL FOR O RLY? WTF?
-    for multiword in MULTIWORD_KEYWORDS:
-        if line.startswith(multiword):
-            tokens.append({"type": TokenType.KEYWORD, "value": multiword})
-            line = line[len(multiword):].strip()  # Remove matched keyword from the line
-            break
-        
-    # Tokenize the rest of the line as usual
-    combined_pattern = r'"[^"]*"|' + REGEX_PATTERNS[TokenType.KEYWORD] + r'|[^\s]+'
-    for match in re.finditer(combined_pattern, line):
-        token = match.group(0)
-        token_type = determine_token_type(token)
-        tokens.append({"type": token_type, "value": token})
+        return tokens, False
 
-    return tokens, False
+def lex(source_code):
+    lexer = LOLLexer(source_code)
+    tokens = lexer.tokenize()
+    compiled_lex = []
+
+    yarnLiterals = [token for token in tokens if token['type'] == TokenType.YARN_LITERAL]
+    if len(yarnLiterals) != 0:  # add the " " separately and the yarn
+        for i in yarnLiterals:  # i is tokens[i]
+            temp = i['value'].rstrip()  # remove leading and trailing space characters 
+            val = temp.lstrip()
+            new = {'type': 'String Delimiter', 'value': '"'}
+            index = tokens.index(i)
+            i['value'] = val[1:-1]
+            tokens.insert(index, new)
+            tokens.insert(index + 2, new)
+
+    yarnLiterals.clear()
+    for token in tokens:
+        if token['type'] != TokenType.YARN_LITERAL:  # if it is not yarn, remove trailing and leading spaces
+            temp = token['value'].rstrip()
+            val = temp.lstrip()
+            compiled_lex.append([val, token['type']])
+        else:  # if it is yarn, append the value as it is to retain spaces
+            compiled_lex.append([token['value'], token['type']])
+    return compiled_lex
+
+# IT VALUE GETTER
+def get_IT():
+    return symbol_table[0][1]
 
 # Main function
 def main():
-    in_multiline_comment = False
     try:
         with open("input.txt", "r") as input_file, open("output.txt", "w") as output_file:
-            for line in input_file:
-                tokens, in_multiline_comment = tokenize_line(line, in_multiline_comment)
-                for token in tokens:
-                    output_file.write(json.dumps(token) + "\n")
+            source_code = input_file.readlines()
+            tokens = lex(source_code)
+            for token in tokens:
+                output_file.write(json.dumps(token) + "\n")
         print("Tokenization complete. Check output.txt for results.")
     except FileNotFoundError as e:
         print(f"Error: {e}")
