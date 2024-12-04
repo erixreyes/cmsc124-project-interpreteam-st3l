@@ -1,7 +1,11 @@
 Parsing successful: Program structure is valid.
 Symbol Table:
-monde: {'value': None}
-num: {'value': '17'}
-name: {'value': '"seventeen"'}
-fnum: {'value': '17.0'}
-flag: {'value': 'WIN'}
+monde: None
+num: 17
+name: "seventeen"
+fnum: 17.0
+flag: WIN
+sum: 30
+diff: 13
+prod: 12
+quo: 0.8

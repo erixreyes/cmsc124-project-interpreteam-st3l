@@ -26,21 +26,7 @@ class SymbolTable:
         """Add or update a variable in the symbol table."""
         if name in self.table:
             raise ValueError(f"Variable '{name}' already declared.")
-        self.table[name] = {"value": value}
-
-    def update_variable(self, name, value):
-        """Update a variable's value."""
-        if name not in self.table:
-            raise ValueError(f"Variable '{name}' not declared.")
-        
-        # Dynamically update type if value is provided
-        var_type = self.infer_type(value)
-        self.table[name].update({"value": value, "type": var_type})
-
-    def get_variable(self, name):
-        """Retrieve a variable's information from the symbol table."""
-        return self.table.get(name)
-
+        self.table[name] = value
 
     def __str__(self):
         # Return a formatted string representation of the variables
@@ -56,12 +42,6 @@ class Parser:
         self.functions = {}  # Initialize the functions dictionary to store defined functions
         self.symbol_table = SymbolTable()  # Initialize the symbol table
 
-    def add_symbol(self, name, symbol_type, properties):
-        """Add or update a symbol in the symbol table."""
-        self.symbol_table[name] = {
-            "type": symbol_type,
-            "properties": properties
-    }
     def peek(self):
         """Peek at the current token."""
         while self.current < len(self.tokens):
@@ -98,25 +78,30 @@ class Parser:
 
     def parse_literal(self):
         """Parse a literal: numbr, numbar, yarn, troof."""
-        # Check for TROOF literal (WIN or FAIL)
+        # check for TROOF literal (WIN or FAIL)
         troof = self.match("TROOF_LITERAL")
         if troof:
             if troof["value"] == "WIN":
-                self.it = True  # WIN is considered True
+                self.it = True 
             elif troof["value"] == "FAIL":
-                self.it = False  # FAIL is considered False
+                self.it = False
             return troof
 
-        # Proceed with the rest of the literals (numbr, numbar, yarn, etc.)
-        return (
-            self.match("NUMBR_LITERAL") or
-            self.match("NUMBAR_LITERAL") or
-            self.match("YARN_LITERAL")
-        )
+        """Parse a literal value: NUMBR, NUMBAR, YARN, TROOF."""
+        if self.match("NUMBR_LITERAL"):
+            return {"type": "NUMBR", "value": int(self.tokens[self.current - 1]["value"])}
+        elif self.match("NUMBAR_LITERAL"):
+            return {"type": "NUMBAR", "value": float(self.tokens[self.current - 1]["value"])}
+        elif self.match("YARN_LITERAL"):
+            return {"type": "YARN", "value": self.tokens[self.current - 1]["value"]}
+        elif self.match("TROOF_LITERAL"):
+            return {"type": "TROOF", "value": self.tokens[self.current - 1]["value"] == "WIN"}
 
+        return None
+    
     def parse_expression(self):
         """Parse an expression: arithmetic, logical, literal, or variable."""
-        # Handle SMOOSH (string concatenation)
+        # Handle string concatenation
         if self.match("KEYWORD", "SMOOSH"):
             return self.parse_smoosh()  # Handle the string concatenation
 
@@ -125,13 +110,78 @@ class Parser:
         self.match("KEYWORD", "PRODUKT OF") or self.match("KEYWORD", "QUOSHUNT OF") or \
         self.match("KEYWORD", "MOD OF") or self.match("KEYWORD", "BIGGR OF") or \
         self.match("KEYWORD", "SMALLR OF"):
+            # Get variable type
+            var_name = None
+            var_name_type = self.tokens[self.current - 3]["type"]
+            if var_name_type == "VARIABLE_IDENTIFIER":
+                var_name = self.tokens[self.current - 3]["value"]
+                # print(var_name)
+
             operator = self.tokens[self.current - 1]["value"]
+            # Parse the first operand
             if not self.parse_expression():
-                self.error(f"Expected an expression after '{operator}'")
+                self.error(f"Expected the first operand after '{operator}'")
+            if isinstance(self.it, dict):  # Check if self.it is a dictionary
+                operand1 = self.it.get('value')  # Safely get the 'value' from the dictionary
+                operand1_type = self.it.get('type')
+                # print(operand1_type)
+                # if isinstance(operand1, int):  # Check if operand1 is an int
+                #     self.it['type'] = "NUMBR_LITERAL"  # Update the 'type' in the dictionary
+                # elif isinstance(operand1, float):  # Check if operand1 is a float
+                #     self.it['type'] = "NUMBAR_LITERAL"  # Update the 'type' in the dictionary
+            else:
+                operand1 = self.it  # Use self.it directly if it's not a dictionary
+                # operand1_type = "NUMBR_LITERAL" if isinstance(operand1, int) else "NUMBAR_LITERAL"
+            # Ensure 'AN' separates the operands
             if not self.match("KEYWORD", "AN"):
                 self.error(f"Expected 'AN' between operands in '{operator}'")
+
+            # Parse the second operand
             if not self.parse_expression():
-                self.error(f"Expected an expression after 'AN' in '{operator}'")
+                self.error(f"Expected the second operand after 'AN' in '{operator}'")
+            if isinstance(self.it, dict):  # Check if self.it is a dictionary
+                operand2 = self.it.get('value')  # Safely get the 'value' from the dictionary
+                operand2_type = self.it.get('type')
+                # if isinstance(operand1, int):  # Check if operand1 is an int
+                #     self.it['type'] = "NUMBR_LITERAL"  # Update the 'type' in the dictionary
+                # elif isinstance(operand1, float):  # Check if operand1 is a float
+                #     self.it['type'] = "NUMBAR_LITERAL"  # Update the 'type' in the dictionary
+            else:
+                operand2 = self.it  # Use self.it directly if it's not a dictionary
+                operand2_type = "NUMBR_LITERAL" if isinstance(operand2, int) else "NUMBAR_LITERAL"
+                
+            # Ensure 'AN' separates the operands
+            # pang debug lang
+            # print(operator)
+            # print(operand1)
+            # print(operand2)
+            # Perform the operation
+            if operator == "SUM OF":
+                self.it = operand1 + operand2
+            elif operator == "DIFF OF":
+                self.it = operand1 - operand2
+            elif operator == "PRODUKT OF":
+                self.it = operand1 * operand2
+            elif operator == "QUOSHUNT OF":
+                self.it = operand1 / operand2 if operand2 != 0 else self.error("Division by zero")
+            elif operator == "MOD OF":
+                self.it = operand1 % operand2
+            elif operator == "BIGGR OF":
+                self.it = max(operand1, operand2)
+            elif operator == "SMALLR OF":
+                self.it = min(operand1, operand2)
+            
+            if var_name is not None:
+                self.symbol_table.add_variable(var_name, self.it)
+            return True
+                
+            
+
+            
+        # Parse literals (NUMBR_LITERAL, NUMBAR_LITERAL, etc.)
+        literal = self.parse_literal()
+        if literal:
+            self.it = literal["value"]  # Store the literal value in 'IT'
             return True
 
         # Handle logical operators: BOTH OF, EITHER OF, WON OF
@@ -261,13 +311,7 @@ class Parser:
                 else:
                     self.error(f"Unsupported type '{type_['value']}' after 'MAEK A'")
             return True
-
-        # Now check if it's a literal, variable, or TROOF
-        literal = self.parse_literal()  # This handles number, string, etc.
-        if literal:
-            self.it = literal["value"]  # Store the literal value in 'IT'
-            return True
-
+        
         # Handle TROOF (WIN and FAIL) casting to NUMBR or NUMBAR
         troof = self.match("TROOF_LITERAL")
         if troof:
@@ -368,6 +412,7 @@ class Parser:
 
         # Concatenate all parts into a single string and store in IT
         self.it = "".join(result)
+        print (self.it)
 
     def parse_inline_comment(self):
         """Parse an optional inline comment: BTW <text>."""
@@ -897,7 +942,6 @@ class Parser:
         if not self.match("KEYWORD", "HAI"):
             self.error("Expected 'HAI' at the start of the program")
 
-        # Allow function declarations before WAZZUP
         while self.match("KEYWORD", "HOW IZ I"):  # Function declarations can appear before WAZZUP
             self.parse_function_definition()  # Handle function definition
 
@@ -932,10 +976,11 @@ def main():
             output_file.write("Parsing successful: Program structure is valid.\n")
             output_file.write("Symbol Table:\n")
             output_file.write(str(parser.symbol_table) + "\n")  # Write the symbol table
-
-        print("Parsing successful: Program structure is valid.")
-        print("Declared Variables:", parser.variables)  # Output the variables
-        print("Symbol Table:", parser.symbol_table)  # Output the symbol table
+            # output_file.write("Declared Variables:\n")
+            # output_file.write(str(parser.variables) + "\n")  # Write the variables
+        # print("Parsing successful: Program structure is valid.")
+        # print("Declared Variables:\n", parser.variables,"\n")  # Output the variables
+        print("Symbol Table:\n", parser.symbol_table)  # Output the symbol table
 
     except SyntaxError as e:
         with open("parsing_output.txt", "w") as output_file:
