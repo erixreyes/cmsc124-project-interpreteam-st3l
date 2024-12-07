@@ -143,14 +143,10 @@ def lex(source_code):
         if token['type'] != TokenType.YARN_LITERAL:  # if it is not yarn, remove trailing and leading spaces
             temp = token['value'].rstrip()
             val = temp.lstrip()
-            compiled_lex.append([val, token['type']])
+            compiled_lex.append({"type": token['type'], "value": val})
         else:  # if it is yarn, append the value as it is to retain spaces
-            compiled_lex.append([token['value'], token['type']])
+            compiled_lex.append({"type": token['type'], "value": token['value']})
     return compiled_lex
-
-# IT VALUE GETTER
-def get_IT():
-    return symbol_table[0][1]
 
 # Main function
 def main():

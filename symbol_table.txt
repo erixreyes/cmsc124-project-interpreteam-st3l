@@ -1,0 +1,5 @@
+monde: None
+num: 17
+name: "seventeen"
+fnum: 17.0
+flag: WIN

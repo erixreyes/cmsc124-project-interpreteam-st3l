@@ -32,8 +32,6 @@ class SymbolTable:
         """Update a variable's value."""
         if name not in self.table:
             raise ValueError(f"Variable '{name}' not declared.")
-        
-        # Dynamically update type if value is provided
         var_type = self.infer_type(value)
         self.table[name].update({"value": value, "type": var_type})
 
@@ -41,10 +39,21 @@ class SymbolTable:
         """Retrieve a variable's information from the symbol table."""
         return self.table.get(name)
 
+    def write_to_file(self, file_name="symbol_table.txt"):
+        """Write the symbol table to a file."""
+        try:
+            with open(file_name, "w") as file:
+                for name, properties in self.table.items():
+                    value = properties.get("value", "NOOB")  # Default to NOOB if no value
+                    file.write(f"{name}: {value}\n")
+            print(f"Symbol table successfully written to {file_name}.")
+        except IOError as e:
+            print(f"Error writing to file: {e}")
 
     def __str__(self):
         # Return a formatted string representation of the variables
         return "\n".join([f"{name}: {value}" for name, value in self.table.items()])
+
 
 class Parser:
     def __init__(self, tokens):
@@ -927,6 +936,9 @@ def main():
         parser = Parser(tokens)
         parser.parse_program_structure()
 
+        # Write the symbol table to a file
+        parser.symbol_table.write_to_file()
+
         # Success message and output
         with open("parsing_output.txt", "w") as output_file:
             output_file.write("Parsing successful: Program structure is valid.\n")
@@ -941,6 +953,7 @@ def main():
         with open("parsing_output.txt", "w") as output_file:
             output_file.write(f"Parsing failed: {e}\n")
         print(f"Parsing failed: {e}")
+
 
 
 if __name__ == "__main__":

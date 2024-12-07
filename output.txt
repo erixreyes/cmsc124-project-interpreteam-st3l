@@ -11,7 +11,9 @@
 {"type": "KEYWORD", "value": "I HAS A"}
 {"type": "VARIABLE_IDENTIFIER", "value": "name"}
 {"type": "KEYWORD", "value": "ITZ"}
-{"type": "YARN_LITERAL", "value": "\"seventeen\""}
+{"type": "String Delimiter", "value": "\""}
+{"type": "YARN_LITERAL", "value": "seventeen"}
+{"type": "String Delimiter", "value": "\""}
 {"type": "KEYWORD", "value": "I HAS A"}
 {"type": "VARIABLE_IDENTIFIER", "value": "fnum"}
 {"type": "KEYWORD", "value": "ITZ"}
@@ -51,7 +53,9 @@
 {"type": "KEYWORD", "value": "BUHBYE"}
 {"type": "COMMENT", "value": "BTW print literals and variables"}
 {"type": "KEYWORD", "value": "VISIBLE"}
-{"type": "YARN_LITERAL", "value": "\"declarations\""}
+{"type": "String Delimiter", "value": "\""}
+{"type": "YARN_LITERAL", "value": "declarations"}
+{"type": "String Delimiter", "value": "\""}
 {"type": "KEYWORD", "value": "VISIBLE"}
 {"type": "VARIABLE_IDENTIFIER", "value": "monde"}
 {"type": "COMMENT", "value": "BTW should be NOOB"}

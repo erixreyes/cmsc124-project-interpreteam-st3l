@@ -1,7 +1,1 @@
-Parsing successful: Program structure is valid.
-Symbol Table:
-monde: {'value': None}
-num: {'value': '17'}
-name: {'value': '"seventeen"'}
-fnum: {'value': '17.0'}
-flag: {'value': 'WIN'}
+Parsing failed: Expected a literal, variable, or expression after 'ITZ'. Found {'type': 'String Delimiter', 'value': '"'} at position 13.
