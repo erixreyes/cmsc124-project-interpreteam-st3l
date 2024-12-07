@@ -1,15 +1,3 @@
-import math
-
-operations_arr = [
-    "SUM OF", "DIFF OF", "PRODUKT OF", "QUOSHUNT OF", "MOD OF", "BIGGR OF", "SMALLR OF",
-    "BOTH SAEM", "DIFFRINT", "NOT", "BOTH OF", "EITHER OF", "WON OF", "ALL OF", "ANY OF"
-]
-arithmetic_arr = ["SUM OF", "DIFF OF", "PRODUKT OF", "QUOSHUNT OF", "MOD OF", "BIGGR OF", "SMALLR OF"]
-comparison_arr = ["BOTH SAEM", "DIFFRINT"]
-boolean_arr = ["BOTH OF", "EITHER OF", "WON OF"]
-boolean_start = ["ALL OF", "ANY OF"]
-datatypes_arr = ["NUMBR Literal", "NUMBAR Literal", "YARN Literal", "TROOF Literal", "NOOB"]
-
 symbol_table = []  # Store variables
 functions = {}  # Store for functions
 
