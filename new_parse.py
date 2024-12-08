@@ -95,69 +95,14 @@ class Parser:
         self.match("KEYWORD", "PRODUKT OF") or self.match("KEYWORD", "QUOSHUNT OF") or \
         self.match("KEYWORD", "MOD OF") or self.match("KEYWORD", "BIGGR OF") or \
         self.match("KEYWORD", "SMALLR OF"):
-            # Get variable type
-            var_name = None
-            var_name_type = self.tokens[self.current - 3]["type"]
-            if var_name_type == "VARIABLE_IDENTIFIER":
-                var_name = self.tokens[self.current - 3]["value"]
-                # print(var_name)
-
             operator = self.tokens[self.current - 1]["value"]
-            # Parse the first operand
             if not self.parse_expression():
-                self.error(f"Expected the first operand after '{operator}'")
-            if isinstance(self.it, dict):  # Check if self.it is a dictionary
-                operand1 = self.it.get('value')  # Safely get the 'value' from the dictionary
-                operand1_type = self.it.get('type')
-                # print(operand1_type)
-                # if isinstance(operand1, int):  # Check if operand1 is an int
-                #     self.it['type'] = "NUMBR_LITERAL"  # Update the 'type' in the dictionary
-                # elif isinstance(operand1, float):  # Check if operand1 is a float
-                #     self.it['type'] = "NUMBAR_LITERAL"  # Update the 'type' in the dictionary
-            else:
-                operand1 = self.it  # Use self.it directly if it's not a dictionary
-                # operand1_type = "NUMBR_LITERAL" if isinstance(operand1, int) else "NUMBAR_LITERAL"
-            # Ensure 'AN' separates the operands
+                self.error(f"Expected an expression after '{operator}'")
             if not self.match("KEYWORD", "AN"):
                 self.error(f"Expected 'AN' between operands in '{operator}'")
-
-            # Parse the second operand
             if not self.parse_expression():
-                self.error(f"Expected the second operand after 'AN' in '{operator}'")
-            if isinstance(self.it, dict):  # Check if self.it is a dictionary
-                operand2 = self.it.get('value')  # Safely get the 'value' from the dictionary
-                operand2_type = self.it.get('type')
-                # if isinstance(operand1, int):  # Check if operand1 is an int
-                #     self.it['type'] = "NUMBR_LITERAL"  # Update the 'type' in the dictionary
-                # elif isinstance(operand1, float):  # Check if operand1 is a float
-                #     self.it['type'] = "NUMBAR_LITERAL"  # Update the 'type' in the dictionary
-            else:
-                operand2 = self.it  # Use self.it directly if it's not a dictionary
-                operand2_type = "NUMBR_LITERAL" if isinstance(operand2, int) else "NUMBAR_LITERAL"
-                
-            # Ensure 'AN' separates the operands
-            # pang debug lang
-            # print(operator)
-            # print(operand1)
-            # print(operand2)
-            # Perform the operation
-            if operator == "SUM OF":
-                self.it = operand1 + operand2
-            elif operator == "DIFF OF":
-                self.it = operand1 - operand2
-            elif operator == "PRODUKT OF":
-                self.it = operand1 * operand2
-            elif operator == "QUOSHUNT OF":
-                self.it = operand1 / operand2 if operand2 != 0 else self.error("Division by zero")
-            elif operator == "MOD OF":
-                self.it = operand1 % operand2
-            elif operator == "BIGGR OF":
-                self.it = max(operand1, operand2)
-            elif operator == "SMALLR OF":
-                self.it = min(operand1, operand2)
-            
+                self.error(f"Expected an expression after 'AN' in '{operator}'")
             return True
-                
         # Parse literals (NUMBR_LITERAL, NUMBAR_LITERAL, etc.)
         literal = self.parse_literal()
         if literal:
