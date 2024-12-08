@@ -1,55 +1,40 @@
-symbol_table = []  # Store variables
-functions = {}  # Store for functions
+import sys
+import os
 
-
-def get_identifiers(symbol_table):
-    return [i[0] for i in symbol_table]
-
-
-def symboltable_insert(symbol_table, new_identifier, new_val, datatype):
-    if new_identifier not in get_identifiers(symbol_table):
-        symbol_table.append([new_identifier, new_val, datatype])
-    else:
-        d_index = get_identifiers(symbol_table).index(new_identifier)
-        symbol_table[d_index] = [new_identifier, new_val, datatype]
-
-
-def find_value(symbol_table, identifier):
-    for var in symbol_table:
-        if var[0] == identifier:
-            return [var[1], var[2]]
-    return False
+# Redirect output to interpreted.txt
+sys.stdout = open("interpreted.txt", "w")
 
 
 def typecast_to_troof(value, value_type):
     """Typecast values to TROOF Literal (Boolean)."""
     if value_type == "TROOF Literal":
         return 1 if value == "WIN" else 0
-    elif value_type != "TROOF Literal":
-        if value == "\"\"":
-            return 0
-        return 1 if int(value) != 0 else 0
-    return value
+    elif value_type == "YARN Literal":
+        return 1 if value.strip() else 0
+    elif value_type in ["NUMBR Literal", "NUMBAR Literal"]:
+        return 1 if float(value) != 0 else 0
+    raise TypeError(f"Cannot cast type '{value_type}' to TROOF.")
 
 
 def boolean_op(value1, type1, value2, type2, op):
+    """Evaluate boolean operations."""
     value1 = typecast_to_troof(value1, type1)
     value2 = typecast_to_troof(value2, type2)
 
     if op == "BOTH OF":
-        result = value1 and value2
+        return "WIN" if value1 and value2 else "FAIL", "TROOF Literal"
     elif op == "EITHER OF":
-        result = value1 or value2
+        return "WIN" if value1 or value2 else "FAIL", "TROOF Literal"
     elif op == "WON OF":
-        result = (value1 != value2)
-
-    return "WIN" if result else "FAIL", "TROOF Literal"
+        return "WIN" if value1 != value2 else "FAIL", "TROOF Literal"
+    elif op == "NOT":
+        return "WIN" if not value1 else "FAIL", "TROOF Literal"
 
 
 def comparison_op(value1, type1, value2, type2, op):
-    # Type check before comparison
+    """Evaluate comparison operations."""
     if type1 != type2:
-        return f"Error: Type mismatch between {type1} and {type2}"
+        raise TypeError(f"Type mismatch between {type1} and {type2}")
 
     if type1 == "NUMBR Literal":
         value1 = int(value1)
@@ -65,8 +50,9 @@ def comparison_op(value1, type1, value2, type2, op):
 
 
 def arithmetic_op(value1, type1, value2, type2, op):
+    """Evaluate arithmetic operations."""
     if type1 != type2:
-        return f"Error: Type mismatch between {type1} and {type2}"
+        raise TypeError(f"Type mismatch between {type1} and {type2}")
 
     if type1 == "NUMBR Literal":
         value1 = int(value1)
@@ -83,11 +69,11 @@ def arithmetic_op(value1, type1, value2, type2, op):
         return value1 * value2, type1
     elif op == "QUOSHUNT OF":
         if value2 == 0:
-            return "Error: Division by zero", None
+            raise ZeroDivisionError("Division by zero.")
         return value1 / value2, type1
     elif op == "MOD OF":
         if value2 == 0:
-            return "Error: Modulo by zero", None
+            raise ZeroDivisionError("Modulo by zero.")
         return value1 % value2, type1
     elif op == "BIGGR OF":
         return max(value1, value2), type1
@@ -95,32 +81,48 @@ def arithmetic_op(value1, type1, value2, type2, op):
         return min(value1, value2), type1
 
 
-def get_input(value):
-    input_prompt = f"Input value of {value} :"
-    x = input(input_prompt)
-    return [x, "YARN Literal"] if len(x) else ["", "YARN Literal"]
+def smoosh(values):
+    """Concatenate values as strings."""
+    return "".join(map(str, values)), "YARN Literal"
 
 
-def insert_function(function_name, params, return_type):
-    if function_name in functions:
-        return f"Error: Function {function_name} already defined"
-    functions[function_name] = {"params": params, "return_type": return_type}
-    return None
+def get_input(prompt):
+    """Handle user input."""
+    try:
+        return input(f"{prompt}: ")
+    except EOFError:
+        raise RuntimeError("Input failed.")
 
 
-def check_function_call(function_name, args):
-    if function_name not in functions:
-        return f"Error: Function {function_name} not defined"
-    func = functions[function_name]
-    if len(func["params"]) != len(args):
-        return f"Error: Incorrect number of arguments for {function_name}"
-    for i, (param_type, arg) in enumerate(zip(func["params"], args)):
-        if param_type != type(arg).__name__:
-            return f"Error: Argument {i+1} type mismatch in {function_name}"
-    return None
+# Main Execution
+def main():
+    if len(sys.argv) < 2:
+        print("Usage: python semantics.py <lolcode_file>")
+        return
+
+    lolcode_file = sys.argv[1]
+
+    if not os.path.exists(lolcode_file):
+        print(f"Error: File '{lolcode_file}' not found.")
+        return
+
+    # Ensure the input file is used for the lexical analyzer
+    with open("input.txt", "w") as input_file:
+        with open(lolcode_file, "r") as lolcode:
+            input_file.write(lolcode.read())
+
+    try:
+        # Step 1: Tokenization using lexical.py
+        from lexical import main as lexical_main
+        lexical_main()
+
+        # Step 2: Parsing and execution using new_parse.py
+        from new_parse import main as parse_main
+        parse_main()
+
+    except Exception as e:
+        print(f"Error during interpretation: {e}")
 
 
-def print_symbol_table():
-    for identifier, value, datatype in symbol_table:
-        print(f"{identifier}: {value}")
-
+if __name__ == "__main__":
+    main()

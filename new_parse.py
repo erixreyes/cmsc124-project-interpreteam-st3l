@@ -18,20 +18,6 @@ def read_tokens(file_name="output.txt"):
         print(f"Error decoding JSON: {e}")
         return []
     
-class SymbolTable:
-    def __init__(self):
-        self.table = {}  # Stores variables and functions
-
-    def add_variable(self, name, value=None):
-        """Add or update a variable in the symbol table."""
-        if name in self.table:
-            raise ValueError(f"Variable '{name}' already declared.")
-        self.table[name] = value
-
-    def __str__(self):
-        # Return a formatted string representation of the variables
-        return "\n".join([f"{name}: {value}" for name, value in self.table.items()])
-
 class Parser:
     def __init__(self, tokens):
         self.tokens = tokens
@@ -40,7 +26,6 @@ class Parser:
         self.it = None  # Represent the IT variable
         self.inside_wazzup = False 
         self.functions = {}  # Initialize the functions dictionary to store defined functions
-        self.symbol_table = SymbolTable()  # Initialize the symbol table
 
     def peek(self):
         """Peek at the current token."""
@@ -171,13 +156,8 @@ class Parser:
             elif operator == "SMALLR OF":
                 self.it = min(operand1, operand2)
             
-            if var_name is not None:
-                self.symbol_table.add_variable(var_name, self.it)
             return True
                 
-            
-
-            
         # Parse literals (NUMBR_LITERAL, NUMBAR_LITERAL, etc.)
         literal = self.parse_literal()
         if literal:
@@ -486,14 +466,12 @@ class Parser:
                 # Store the variable with its initialized value and type
                 self.variables[var_name] = {"type": literal["type"], "value": literal["value"]}
                 var_type = literal["type"]
-                self.symbol_table.add_variable(var_name, literal["value"])
             else:
                 var_value = self.match("VARIABLE_IDENTIFIER")
                 
                 if var_value:
                     if var_value["value"] in self.variables:
                         self.variables[var_name] = {"type": self.variables[var_value["value"]]["type"], "value": self.variables[var_value["value"]]["value"]}
-                        self.symbol_table.add_variable(var_name, self.variables[var_value["value"]]["value"])
                     else:
                         self.error(f"Variable '{var_value['value']}' not declared.")
                 else:
@@ -502,7 +480,6 @@ class Parser:
                     self.variables[var_name] = {"type": var_type, "value": self.it}
         else:
             self.variables[var_name] = {"type": var_type, "value": None}
-            self.symbol_table.add_variable(var_name,  None)
 
     def parse_loop(self):
         """Parse a loop: IM IN YR <label> <operation> YR <variable> [TIL/WILE <condition>] ... IM OUTTA YR <label>."""
@@ -974,13 +951,7 @@ def main():
         # Success message and output
         with open("parsing_output.txt", "w") as output_file:
             output_file.write("Parsing successful: Program structure is valid.\n")
-            output_file.write("Symbol Table:\n")
-            output_file.write(str(parser.symbol_table) + "\n")  # Write the symbol table
-            # output_file.write("Declared Variables:\n")
-            # output_file.write(str(parser.variables) + "\n")  # Write the variables
-        # print("Parsing successful: Program structure is valid.")
-        # print("Declared Variables:\n", parser.variables,"\n")  # Output the variables
-        print("Symbol Table:\n", parser.symbol_table)  # Output the symbol table
+
 
     except SyntaxError as e:
         with open("parsing_output.txt", "w") as output_file:

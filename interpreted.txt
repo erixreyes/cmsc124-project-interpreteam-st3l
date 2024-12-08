@@ -1,0 +1,2 @@
+Tokenization complete. Check output.txt for results.
+Error during interpretation: unsupported operand type(s) for +: 'NoneType' and 'NoneType'

@@ -1,0 +1,5 @@
+=== Symbol Table ===
+Variable Name	Type	Value
+----------------------------------------
+----------------------------------------
+=== End of Symbol Table ===

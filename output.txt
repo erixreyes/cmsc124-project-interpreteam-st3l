@@ -1,0 +1,29 @@
+{"type": "KEYWORD", "value": "HAI"}
+{"type": "KEYWORD", "value": "WAZZUP"}
+{"type": "COMMENT", "value": "BTW variable dec"}
+{"type": "KEYWORD", "value": "I HAS A"}
+{"type": "VARIABLE_IDENTIFIER", "value": "monde"}
+{"type": "KEYWORD", "value": "I HAS A"}
+{"type": "VARIABLE_IDENTIFIER", "value": "num"}
+{"type": "KEYWORD", "value": "ITZ"}
+{"type": "NUMBR_LITERAL", "value": "17"}
+{"type": "KEYWORD", "value": "BUHBYE"}
+{"type": "KEYWORD", "value": "GIMMEH"}
+{"type": "VARIABLE_IDENTIFIER", "value": "monde"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "KEYWORD", "value": "SUM OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "monde"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "num"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "VARIABLE_IDENTIFIER", "value": "monde"}
+{"type": "KEYWORD", "value": "GIMMEH"}
+{"type": "VARIABLE_IDENTIFIER", "value": "num"}
+{"type": "KEYWORD", "value": "GIMMEH"}
+{"type": "VARIABLE_IDENTIFIER", "value": "monde"}
+{"type": "KEYWORD", "value": "VISIBLE"}
+{"type": "KEYWORD", "value": "DIFF OF"}
+{"type": "VARIABLE_IDENTIFIER", "value": "num"}
+{"type": "KEYWORD", "value": "AN"}
+{"type": "VARIABLE_IDENTIFIER", "value": "monde"}
+{"type": "KEYWORD", "value": "KTHXBYE"}

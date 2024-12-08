@@ -1,0 +1,107 @@
+Error during interpretation: list index out of range
+Error processing line: BTW start of the program -> Insufficient tokens for analysis: [{'type': 'COMMENT', 'value': 'BTW start of the program'}]
+Error processing line: HAI -> Insufficient tokens for analysis: [{'type': 'KEYWORD', 'value': 'HAI'}]
+Error processing line: WAZZUP -> Insufficient tokens for analysis: [{'type': 'KEYWORD', 'value': 'WAZZUP'}]
+Error processing line: BTW variable dec -> Insufficient tokens for analysis: [{'type': 'COMMENT', 'value': 'BTW variable dec'}]
+Error processing line: BUHBYE -> Insufficient tokens for analysis: [{'type': 'KEYWORD', 'value': 'BUHBYE'}]
+Error processing line: BTW print literals and variables -> Insufficient tokens for analysis: [{'type': 'COMMENT', 'value': 'BTW print literals and variables'}]
+Error processing line: VISIBLE monde BTW should be NOOB -> Invalid token in VISIBLE statement: monde
+Error processing line: VISIBLE num -> Invalid token in VISIBLE statement: num
+Error processing line: VISIBLE name -> Invalid token in VISIBLE statement: name
+Error processing line: VISIBLE fnum -> Invalid token in VISIBLE statement: fnum
+Error processing line: VISIBLE flag -> Invalid token in VISIBLE statement: flag
+Error processing line: VISIBLE sum -> Invalid token in VISIBLE statement: sum
+Error processing line: VISIBLE diff -> Invalid token in VISIBLE statement: diff
+Error processing line: VISIBLE prod -> Invalid token in VISIBLE statement: prod
+Error processing line: VISIBLE quo -> Invalid token in VISIBLE statement: quo
+Error processing line: BTW print expressions -> Insufficient tokens for analysis: [{'type': 'COMMENT', 'value': 'BTW print expressions'}]
+Error processing line: VISIBLE SUM OF PRODUKT OF 3 AN 5 AN BIGGR OF DIFF OF 17 AN 2 AN 5 -> Invalid token in VISIBLE statement: SUM OF
+Error processing line: VISIBLE BIGGR OF PRODUKT OF 11 AN 2 AN QUOSHUNT OF SUM OF 3 AN 5 AN 2 -> Invalid token in VISIBLE statement: BIGGR OF
+Error processing line: KTHXBYE -> Insufficient tokens for analysis: [{'type': 'KEYWORD', 'value': 'KTHXBYE'}]
+Error processing line: BTW start of the program -> name 'TokenType' is not defined
+Error processing line: HAI -> name 'TokenType' is not defined
+Error processing line: WAZZUP -> name 'TokenType' is not defined
+Error processing line: BTW variable dec -> name 'TokenType' is not defined
+Error processing line: I HAS A monde -> name 'TokenType' is not defined
+Error processing line: I HAS A num ITZ 17 -> name 'TokenType' is not defined
+Error processing line: I HAS A name ITZ "seventeen" -> name 'TokenType' is not defined
+Error processing line: I HAS A fnum ITZ 17.0 -> name 'TokenType' is not defined
+Error processing line: I HAS A flag ITZ WIN -> name 'TokenType' is not defined
+Error processing line: I HAS A sum ITZ SUM OF num AN 13 -> name 'TokenType' is not defined
+Error processing line: I HAS A diff ITZ DIFF OF sum AN 17 -> name 'TokenType' is not defined
+Error processing line: I HAS A prod ITZ PRODUKT OF 3 AN 4 -> name 'TokenType' is not defined
+Error processing line: I HAS A quo ITZ QUOSHUNT OF 4 AN 5 -> name 'TokenType' is not defined
+Error processing line: BUHBYE -> name 'TokenType' is not defined
+Error processing line: BTW print literals and variables -> name 'TokenType' is not defined
+Error processing line: VISIBLE "declarations" -> name 'TokenType' is not defined
+Error processing line: VISIBLE monde BTW should be NOOB -> name 'TokenType' is not defined
+Error processing line: VISIBLE num -> name 'TokenType' is not defined
+Error processing line: VISIBLE name -> name 'TokenType' is not defined
+Error processing line: VISIBLE fnum -> name 'TokenType' is not defined
+Error processing line: VISIBLE flag -> name 'TokenType' is not defined
+Error processing line: VISIBLE sum -> name 'TokenType' is not defined
+Error processing line: VISIBLE diff -> name 'TokenType' is not defined
+Error processing line: VISIBLE prod -> name 'TokenType' is not defined
+Error processing line: VISIBLE quo -> name 'TokenType' is not defined
+Error processing line: BTW print expressions -> name 'TokenType' is not defined
+Error processing line: VISIBLE SUM OF PRODUKT OF 3 AN 5 AN BIGGR OF DIFF OF 17 AN 2 AN 5 -> name 'TokenType' is not defined
+Error processing line: VISIBLE BIGGR OF PRODUKT OF 11 AN 2 AN QUOSHUNT OF SUM OF 3 AN 5 AN 2 -> name 'TokenType' is not defined
+Error processing line: KTHXBYE -> name 'TokenType' is not defined
+Error processing line: VISIBLE monde BTW should be NOOB -> Invalid token in VISIBLE statement: monde
+Error processing line: VISIBLE num -> Invalid token in VISIBLE statement: num
+Error processing line: VISIBLE name -> Invalid token in VISIBLE statement: name
+Error processing line: VISIBLE fnum -> Invalid token in VISIBLE statement: fnum
+Error processing line: VISIBLE flag -> Invalid token in VISIBLE statement: flag
+Error processing line: VISIBLE sum -> Invalid token in VISIBLE statement: sum
+Error processing line: VISIBLE diff -> Invalid token in VISIBLE statement: diff
+Error processing line: VISIBLE prod -> Invalid token in VISIBLE statement: prod
+Error processing line: VISIBLE quo -> Invalid token in VISIBLE statement: quo
+Error processing line: VISIBLE SUM OF PRODUKT OF 3 AN 5 AN BIGGR OF DIFF OF 17 AN 2 AN 5 -> Invalid token in VISIBLE statement: SUM OF
+Error processing line: VISIBLE BIGGR OF PRODUKT OF 11 AN 2 AN QUOSHUNT OF SUM OF 3 AN 5 AN 2 -> Invalid token in VISIBLE statement: BIGGR OF
+Error processing line: VISIBLE monde BTW should be NOOB -> Invalid token in VISIBLE statement: monde
+Error processing line: VISIBLE num -> Invalid token in VISIBLE statement: num
+Error processing line: VISIBLE name -> Invalid token in VISIBLE statement: name
+Error processing line: VISIBLE fnum -> Invalid token in VISIBLE statement: fnum
+Error processing line: VISIBLE flag -> Invalid token in VISIBLE statement: flag
+Error processing line: VISIBLE sum -> Invalid token in VISIBLE statement: sum
+Error processing line: VISIBLE diff -> Invalid token in VISIBLE statement: diff
+Error processing line: VISIBLE prod -> Invalid token in VISIBLE statement: prod
+Error processing line: VISIBLE quo -> Invalid token in VISIBLE statement: quo
+Error processing line: VISIBLE SUM OF PRODUKT OF 3 AN 5 AN BIGGR OF DIFF OF 17 AN 2 AN 5 -> Invalid token in VISIBLE statement: SUM OF
+Error processing line: VISIBLE BIGGR OF PRODUKT OF 11 AN 2 AN QUOSHUNT OF SUM OF 3 AN 5 AN 2 -> Invalid token in VISIBLE statement: BIGGR OF
+Error processing line: VISIBLE monde BTW should be NOOB -> Invalid token in VISIBLE statement: monde
+Error processing line: VISIBLE num -> Invalid token in VISIBLE statement: num
+Error processing line: VISIBLE name -> Invalid token in VISIBLE statement: name
+Error processing line: VISIBLE fnum -> Invalid token in VISIBLE statement: fnum
+Error processing line: VISIBLE flag -> Invalid token in VISIBLE statement: flag
+Error processing line: VISIBLE sum -> Invalid token in VISIBLE statement: sum
+Error processing line: VISIBLE diff -> Invalid token in VISIBLE statement: diff
+Error processing line: VISIBLE prod -> Invalid token in VISIBLE statement: prod
+Error processing line: VISIBLE quo -> Invalid token in VISIBLE statement: quo
+Error processing line: VISIBLE SUM OF PRODUKT OF 3 AN 5 AN BIGGR OF DIFF OF 17 AN 2 AN 5 -> Invalid token in VISIBLE statement: SUM OF
+Error processing line: VISIBLE BIGGR OF PRODUKT OF 11 AN 2 AN QUOSHUNT OF SUM OF 3 AN 5 AN 2 -> Invalid token in VISIBLE statement: BIGGR OF
+Error processing line: VISIBLE monde BTW should be NOOB -> Invalid token in VISIBLE statement: monde
+Error processing line: VISIBLE num -> Invalid token in VISIBLE statement: num
+Error processing line: VISIBLE name -> Invalid token in VISIBLE statement: name
+Error processing line: VISIBLE fnum -> Invalid token in VISIBLE statement: fnum
+Error processing line: VISIBLE flag -> Invalid token in VISIBLE statement: flag
+Error processing line: VISIBLE sum -> Invalid token in VISIBLE statement: sum
+Error processing line: VISIBLE diff -> Invalid token in VISIBLE statement: diff
+Error processing line: VISIBLE prod -> Invalid token in VISIBLE statement: prod
+Error processing line: VISIBLE quo -> Invalid token in VISIBLE statement: quo
+Error processing line: VISIBLE SUM OF PRODUKT OF 3 AN 5 AN BIGGR OF DIFF OF 17 AN 2 AN 5 -> Invalid token in VISIBLE statement: SUM OF
+Error processing line: VISIBLE BIGGR OF PRODUKT OF 11 AN 2 AN QUOSHUNT OF SUM OF 3 AN 5 AN 2 -> Invalid token in VISIBLE statement: BIGGR OF
+Error processing line: VISIBLE monde BTW should be NOOB -> Invalid token in VISIBLE statement: monde
+Error processing line: VISIBLE num -> Invalid token in VISIBLE statement: num
+Error processing line: VISIBLE name -> Invalid token in VISIBLE statement: name
+Error processing line: VISIBLE fnum -> Invalid token in VISIBLE statement: fnum
+Error processing line: VISIBLE flag -> Invalid token in VISIBLE statement: flag
+Error processing line: VISIBLE sum -> Invalid token in VISIBLE statement: sum
+Error processing line: VISIBLE diff -> Invalid token in VISIBLE statement: diff
+Error processing line: VISIBLE prod -> Invalid token in VISIBLE statement: prod
+Error processing line: VISIBLE quo -> Invalid token in VISIBLE statement: quo
+Error processing line: VISIBLE SUM OF PRODUKT OF 3 AN 5 AN BIGGR OF DIFF OF 17 AN 2 AN 5 -> Invalid token in VISIBLE statement: SUM OF
+Error processing line: VISIBLE BIGGR OF PRODUKT OF 11 AN 2 AN QUOSHUNT OF SUM OF 3 AN 5 AN 2 -> Invalid token in VISIBLE statement: BIGGR OF
+Error processing line: VISIBLE num -> Invalid token in VISIBLE statement: num
+Error processing line: VISIBLE name -> Invalid token in VISIBLE statement: name
+Error processing line: VISIBLE SUM OF 3 AN 5 -> Invalid token in VISIBLE statement: SUM OF
